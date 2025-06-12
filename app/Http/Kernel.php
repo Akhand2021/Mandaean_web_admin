@@ -45,6 +45,7 @@ class Kernel extends HttpKernel
         ],
         'checklogin'=>[\App\Http\Middleware\LoginMiddleware::class,],
         'preventBackHistory' => [\App\Http\Middleware\PreventBackHistory::class],
+        'apiKey' => [\App\Http\Middleware\APIKeyMiddleware::class],
     ];
 
     /**

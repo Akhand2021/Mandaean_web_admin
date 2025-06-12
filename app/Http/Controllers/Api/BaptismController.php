@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Baptism;
 use App\Models\BaptismVenue;
-use Validator;
-use Auth;
+use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class BaptismController extends Controller
 {

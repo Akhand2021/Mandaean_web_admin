@@ -48,7 +48,7 @@ class LoginController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error','Credential does not matched.');
+            return redirect()->back()->with('error','Credential does not matches.');
         }
 
     }

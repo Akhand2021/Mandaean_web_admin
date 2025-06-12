@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Advertisment;
-use Validator;
-use Auth;
+use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AdvertismentController extends Controller
 {

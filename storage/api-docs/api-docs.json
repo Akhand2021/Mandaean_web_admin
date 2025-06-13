@@ -116,6 +116,117 @@
                     }
                 ]
             }
+        },
+        "/api/forgot": {
+            "post": {
+                "tags": [
+                    "User Management"
+                ],
+                "summary": "Forgot password",
+                "description": "Summary of forgot",
+                "operationId": "7e16a539a7b9ddc2962d0fc985bf8256",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "User's email",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Reset link sent to email"
+                    },
+                    "422": {
+                        "description": "Validation errors or user not found"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/api/resend-otp": {
+            "post": {
+                "tags": [
+                    "User Management"
+                ],
+                "summary": "Resend OTP",
+                "description": "Summary of resendOTP",
+                "operationId": "2e67f946c56f11bf67751e3f43b69972",
+                "parameters": [
+                    {
+                        "name": "mobile_no",
+                        "in": "query",
+                        "description": "User's mobile number",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OTP sent successfully"
+                    },
+                    "422": {
+                        "description": "Validation errors or user not found"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/api/verify-otp": {
+            "post": {
+                "tags": [
+                    "User Management"
+                ],
+                "summary": "Verify OTP",
+                "description": "Summary of verifyOTP",
+                "operationId": "5cd1d4455328e029c8aeaf9aa917ad49",
+                "parameters": [
+                    {
+                        "name": "mobile_no",
+                        "in": "query",
+                        "description": "User's mobile number",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "otp",
+                        "in": "query",
+                        "description": "One Time Password",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OTP verified successfully"
+                    },
+                    "422": {
+                        "description": "OTP expired or wrong OTP entered"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
         }
     },
     "components": {

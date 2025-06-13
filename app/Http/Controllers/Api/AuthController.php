@@ -254,7 +254,7 @@ class AuthController extends Controller
                 'email' => $email,
                 'link' => url('verify') . '/' . $token . '?email=' . urlencode($email)
             ];
-            //___mail_sender($email, $name, $template, $data, $subject);
+            ___mail_sender($email, $name, $template, $data, $subject);
 
             User::where('id', $user->id)->update(['email_verified_at' => date('Y-m-d H:i:s')]);
 
@@ -274,7 +274,26 @@ class AuthController extends Controller
             ], 500);
         }
     }
-
+    /**
+     * Summary of forgot
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/api/forgot",
+     *     tags={"User Management"},
+     *     summary="Forgot password",
+     *     security={{"apiKey":{}}},
+     *     @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         description="User's email",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response="201", description="Reset link sent to email"),
+     *     @OA\Response(response="422", description="Validation errors or user not found")
+     * )
+     */
     public function forgot(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -321,7 +340,26 @@ class AuthController extends Controller
             ], 422);
         }
     }
-
+    /**
+     * Summary of resendOTP
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/api/resend-otp",
+     *     tags={"User Management"},
+     *     summary="Resend OTP",
+     *     security={{"apiKey":{}}},
+     *     @OA\Parameter(
+     *         name="mobile_no",
+     *         in="query",
+     *         description="User's mobile number",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response="201", description="OTP sent successfully"),
+     *     @OA\Response(response="422", description="Validation errors or user not found")
+     * )
+     */
     public function resendOTP(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -380,7 +418,33 @@ class AuthController extends Controller
             ], 422);
         }
     }
-
+    /**
+     * Summary of verifyOTP
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/api/verify-otp",
+     *     tags={"User Management"},
+     *     summary="Verify OTP",
+     *     security={{"apiKey":{}}},
+     *     @OA\Parameter(
+     *         name="mobile_no",
+     *         in="query",
+     *         description="User's mobile number",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="otp",
+     *         in="query",
+     *         description="One Time Password",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response="201", description="OTP verified successfully"),
+     *     @OA\Response(response="422", description="OTP expired or wrong OTP entered")
+     * )
+     */
     public function verifyOTP(Request $request)
     {
         $validator = Validator::make($request->all(), [

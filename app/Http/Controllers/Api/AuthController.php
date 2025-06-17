@@ -517,7 +517,40 @@ class AuthController extends Controller
             return '<h1>Token is expired or Link not Found</h1>';
         }
     }
-
+    /**
+     * Summary of updatePassword
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/api/update-password",
+     *     tags={"User Management"},
+     *     summary="Update user password",
+     *     security={{"apiKey":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="User ID (base64 encoded)",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         description="New password",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="confirm_password",
+     *         in="query",
+     *         description="Confirm new password",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response="200", description="Password updated successfully"),
+     *     @OA\Response(response="422", description="Validation errors")
+     * )
+     */
     public function updatePassword(Request $request)
     {
 
@@ -541,7 +574,13 @@ class AuthController extends Controller
             'password' => $password,
             'remember_token' => NULL
         ]);
-
+        if ($request->has("X-APY-KEY")) {
+            return response([
+                'status' => true,
+                'message' => 'Password updated successfully.',
+                'data' => []
+            ], 200);
+        }
         return '<h1>Password updated successfully.</h1>';
     }
 

@@ -227,6 +227,58 @@
                     }
                 ]
             }
+        },
+        "/api/update-password": {
+            "post": {
+                "tags": [
+                    "User Management"
+                ],
+                "summary": "Update user password",
+                "description": "Summary of updatePassword",
+                "operationId": "ec057bf4678645cfc212af8c81485436",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "User ID (base64 encoded)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "New password",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "confirm_password",
+                        "in": "query",
+                        "description": "Confirm new password",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password updated successfully"
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
         }
     },
     "components": {

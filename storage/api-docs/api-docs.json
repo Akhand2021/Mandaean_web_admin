@@ -279,6 +279,160 @@
                     }
                 ]
             }
+        },
+        "/api/mandanism-list": {
+            "get": {
+                "tags": [
+                    "Mandanism"
+                ],
+                "summary": "Get Mandanism List",
+                "operationId": "mandanismList",
+                "responses": {
+                    "200": {
+                        "description": "Mandanism List retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Mandanism List."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/api/mandanism-detail/{id}": {
+            "get": {
+                "tags": [
+                    "Mandanism"
+                ],
+                "summary": "Get Mandanism Detail",
+                "operationId": "mandanismDetail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Mandanism item",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mandanism Detail retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Mandanism Detail."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Mandanism item not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Mandanism not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/api/holy-book-list": {
+            "get": {
+                "tags": [
+                    "Holy Book"
+                ],
+                "summary": "Get Holy Book List",
+                "operationId": "holyBookList",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type of Holy Book (holy or author)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "holy",
+                                "author"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Holy Book List retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Holy Book List."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -298,6 +452,14 @@
         {
             "name": "User Management",
             "description": "User Management"
+        },
+        {
+            "name": "Mandanism",
+            "description": "Mandanism"
+        },
+        {
+            "name": "Holy Book",
+            "description": "Holy Book"
         }
     ]
 }

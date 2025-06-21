@@ -81,7 +81,7 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::post('profile', [UserController::class, 'profile']);
         Route::post('update-profile', [UserController::class, 'updateProfile']);
         Route::post('change-password', [UserController::class, 'changePassword']);
-        Route::post('delete-account', [UserController::class, 'deleteAccount']);
+        Route::delete('delete-account', [UserController::class, 'deleteAccount']);
 
         Route::post('bookmark', [CategoryController::class, 'Bookmark']);
 

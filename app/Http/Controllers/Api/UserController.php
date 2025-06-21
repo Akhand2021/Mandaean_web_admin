@@ -11,34 +11,36 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function profile(Request $request){
+    public function profile(Request $request)
+    {
         $id = Auth::id();
         $user = User::find($id);
 
-        if($user){
-            $user->gender = ($user->gender)?ucfirst($user->gender):NULL;
-            $user->profile = ($user->profile)?url('/').'/public/'.$user->profile:NULL;
+        if ($user) {
+            $user->gender = ($user->gender) ? ucfirst($user->gender) : NULL;
+            $user->profile = ($user->profile) ? url('/') . '/public/' . $user->profile : NULL;
             return response([
-                'status'=>true,
-                'message'=>'User profile data.',
-                'data'=>$user
-            ],201);
-        }else{
+                'status' => true,
+                'message' => 'User profile data.',
+                'data' => $user
+            ], 201);
+        } else {
             return response([
-                'status'=>false,
-                'message'=>'User not found.',
-                'data'=>[]
-            ],422);
+                'status' => false,
+                'message' => 'User not found.',
+                'data' => []
+            ], 422);
         }
     }
 
-    public function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
         $id = Auth::id();
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|unique:users,email,'.$id,
+            'email' => 'required|unique:users,email,' . $id,
             'country_code' => 'required',
-            'mobile_no' => 'required|unique:users,mobile_no,'.$id,
+            'mobile_no' => 'required|unique:users,mobile_no,' . $id,
             // 'password' => 'required',
             // 'gender' => 'required',
             // 'dob' => 'required',
@@ -47,44 +49,44 @@ class UserController extends Controller
         if ($validator->fails()) {
             $error = $validator->errors()->first();
             return response([
-                'status'=>false,
-                'message'=>$error,
-                'data'=>[]
-            ],422);
+                'status' => false,
+                'message' => $error,
+                'data' => []
+            ], 422);
         }
 
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
-        if($request->mobile_no){
-            $user->country_code = '+'.$request->country_code;
+        if ($request->mobile_no) {
+            $user->country_code = '+' . $request->country_code;
         }
-        if($request->mobile_no){
+        if ($request->mobile_no) {
             $user->mobile_no = $request->mobile_no;
         }
         // $user->password = Hash::make($request->password);
         // $user->gender = $request->gender;
         // $user->dob = $request->dob;
 
-        if ($request->hasFile('profile'))
-        {
+        if ($request->hasFile('profile')) {
             $destinationPath = 'uploads/';
             $file = $request->file('profile');
-            $file_name = time().''.$file->getClientOriginalName();
-            $file->move('public/'.$destinationPath, $file_name);
-            $user->profile = $destinationPath.''.$file_name;
+            $file_name = time() . '' . $file->getClientOriginalName();
+            $file->move('public/' . $destinationPath, $file_name);
+            $user->profile = $destinationPath . '' . $file_name;
         }
         $user->save();
-        $user->profile = $user->profile?url('/').'/public/'.$user->profile:NULL;
+        $user->profile = $user->profile ? url('/') . '/public/' . $user->profile : NULL;
 
         return response([
-            'status'=>true,
-            'message'=>'User profile data updated.',
-            'data'=>$user
-        ],201);
+            'status' => true,
+            'message' => 'User profile data updated.',
+            'data' => $user
+        ], 201);
     }
 
-    public function changePassword(Request $request){
+    public function changePassword(Request $request)
+    {
         $id = Auth::id();
         $validator = Validator::make($request->all(), [
             'old_password' => 'required',
@@ -94,57 +96,89 @@ class UserController extends Controller
         if ($validator->fails()) {
             $error = $validator->errors()->first();
             return response([
-                'status'=>false,
-                'message'=>$error,
-                'data'=>[]
-            ],422);
+                'status' => false,
+                'message' => $error,
+                'data' => []
+            ], 422);
         }
 
         $oldPass = $request->old_password;
         $newPass = $request->new_password;
         $user = User::find($id);
-        
+
         if (!$user) {
             return response([
-                'status'=>false,
-                'message'=>'User not found.',
-                'data'=>[]
-            ],422);
+                'status' => false,
+                'message' => 'User not found.',
+                'data' => []
+            ], 422);
         }
         if (Hash::check($oldPass, $user->password)) {
             $user->password = Hash::make($newPass);
             $user->save();
-            
+
             return response([
-                'status'=>true,
-                'message'=>'Password changed successfully.',
-                'data'=>$user
-            ],201);
-        }else{
+                'status' => true,
+                'message' => 'Password changed successfully.',
+                'data' => $user
+            ], 201);
+        } else {
             return response([
-                'status'=>false,
-                'message'=>'Old password does not match.',
-                'data'=>[]
-            ],422);
+                'status' => false,
+                'message' => 'Old password does not match.',
+                'data' => []
+            ], 422);
         }
     }
-
-    public function deleteAccount(Request $request){
+    /**
+     * Delete user account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @OA\Delete(
+     *     path="/api/delete-account",
+     *     tags={"User"},
+     *     summary="Delete User Account",
+     *     description="Delete the authenticated user's account.",
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
+     *     @OA\Response(
+     *         response=201,
+     *         description="Account deleted successfully.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Account Deleted."),
+     *             @OA\Property(property="data", type="object", example={})
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="User not found.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="User not found."),
+     *             @OA\Property(property="data", type="object", example={})
+     *         )
+     *     )
+     * )
+     * @OA\Tag(name="User")
+     */
+    public function deleteAccount(Request $request)
+    {
         $id = Auth::id();
-        $user = User::where(['id'=>$id])->first();
-        if($user){
-            User::where('email',$user->email)->delete();
+        $user = User::where(['id' => $id])->first();
+        if ($user) {
+            User::where('email', $user->email)->delete();
             return response([
-                'status'=>true,
-                'message'=>'Account Deleted.',
-                'data'=>[]
-            ],201);
-        }else{
+                'status' => true,
+                'message' => 'Account Deleted.',
+                'data' => []
+            ], 201);
+        } else {
             return response([
-                'status'=>false,
-                'message'=>'User not found.',
-                'data'=>[]
-            ],422);
+                'status' => false,
+                'message' => 'User not found.',
+                'data' => []
+            ], 422);
         }
     }
 }

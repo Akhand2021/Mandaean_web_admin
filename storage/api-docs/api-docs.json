@@ -433,6 +433,74 @@
                     }
                 ]
             }
+        },
+        "/api/delete-account": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete User Account",
+                "description": "Delete the authenticated user's account.",
+                "operationId": "4dcf109f5af0c1138334513fef48777d",
+                "responses": {
+                    "201": {
+                        "description": "Account deleted successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Account Deleted."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "User not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -449,6 +517,9 @@
         }
     },
     "tags": [
+        {
+            "name": "User"
+        },
         {
             "name": "User Management",
             "description": "User Management"

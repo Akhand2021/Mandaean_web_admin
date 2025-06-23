@@ -434,6 +434,42 @@
                 ]
             }
         },
+        "/api/static-content": {
+            "get": {
+                "tags": [
+                    "Static Content"
+                ],
+                "summary": "Get Static Content",
+                "description": "Display a listing of the static content.",
+                "operationId": "46dac05c5e4f7c630782fff8ee368f74",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/delete-account": {
             "delete": {
                 "tags": [
@@ -531,6 +567,10 @@
         {
             "name": "Holy Book",
             "description": "Holy Book"
+        },
+        {
+            "name": "Static Content",
+            "description": "Static Content"
         }
     ]
 }

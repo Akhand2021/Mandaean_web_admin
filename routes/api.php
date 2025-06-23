@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\CalenderController;
 use App\Http\Controllers\Api\FuneralController;
 use App\Http\Controllers\Api\InquiryController;
+use App\Http\Controllers\Api\StaticContentController;
 
 
 /*
@@ -118,5 +119,7 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::post('funeral-post', [FuneralController::class, 'FuneralPost']);
 
         Route::post('inquiry-now', [InquiryController::class, 'InquiryNow']);
+        Route::get('static-content', [StaticContentController::class, 'index']);
+        Route::get('static-content/{id}', [StaticContentController::class, 'show']);
     });
-});;
+});

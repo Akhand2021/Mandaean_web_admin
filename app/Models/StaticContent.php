@@ -11,5 +11,5 @@ class StaticContent extends Model
 
     protected $table = 'static_pages';
 
-    protected $fillable = ['slug', 'title', 'content', 'ar_title', 'ar_content', 'pe_title', 'pe_content'];
+    protected $fillable = ['slug', 'title', 'content', 'ar_title', 'ar_content', 'pe_title', 'pe_content', 'image'];
 }

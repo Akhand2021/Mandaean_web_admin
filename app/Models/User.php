@@ -27,6 +27,7 @@ class User extends Authenticatable
         'otp_time',
         'dob',
         'gender',
+        'last_seen', // add last_seen to fillable
     ];
 
     /**

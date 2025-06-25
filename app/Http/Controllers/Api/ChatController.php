@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
+use App\Models\Block;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,7 +26,14 @@ class ChatController extends Controller
     public function activeUsers(Request $request)
     {
         $userId = Auth::id();
+        // Get IDs of users blocked by or who have blocked the current user
+        $blockedIds = Block::where('user_id', $userId)
+            ->pluck('blocked_user_id')
+            ->merge(Block::where('blocked_user_id', $userId)->pluck('user_id'));
+        $activeThreshold = now()->subMinutes(5);
         $users = User::where('id', '!=', $userId)
+            ->where('last_seen', '>=', $activeThreshold)
+            ->whereNotIn('id', $blockedIds)
             ->whereHas('messages', function ($q) use ($userId) {
                 $q->where('sender_id', $userId)->orWhere('receiver_id', $userId);
             })
@@ -166,5 +174,67 @@ class ChatController extends Controller
         ]);
         Message::whereIn('id', $request->message_ids)->delete();
         return response()->json(['status' => 'deleted']);
+    }
+
+    /**
+     * Block a user from chatting
+     *
+     * @OA\Post(
+     *     path="/chat/block",
+     *     summary="Block a user from chat",
+     *     tags={"Chat"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="blocked_user_id", type="integer")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="User blocked")
+     * )
+     */
+    public function blockUser(Request $request)
+    {
+        $request->validate([
+            'blocked_user_id' => 'required|exists:users,id',
+        ]);
+        $userId = Auth::id();
+        if ($userId == $request->blocked_user_id) {
+            return response()->json(['error' => 'You cannot block yourself.'], 422);
+        }
+        $block = Block::firstOrCreate([
+            'user_id' => $userId,
+            'blocked_user_id' => $request->blocked_user_id,
+        ]);
+        return response()->json(['status' => 'blocked', 'block' => $block]);
+    }
+
+    /**
+     * Unblock a user from chatting
+     *
+     * @OA\Post(
+     *     path="/chat/unblock",
+     *     summary="Unblock a user from chat",
+     *     tags={"Chat"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="blocked_user_id", type="integer")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="User unblocked")
+     * )
+     */
+    public function unblockUser(Request $request)
+    {
+        $request->validate([
+            'blocked_user_id' => 'required|exists:users,id',
+        ]);
+        $userId = Auth::id();
+        Block::where('user_id', $userId)
+            ->where('blocked_user_id', $request->blocked_user_id)
+            ->delete();
+        return response()->json(['status' => 'unblocked']);
     }
 }

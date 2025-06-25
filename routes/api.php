@@ -129,5 +129,7 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::post('chat/mark-delivered', [\App\Http\Controllers\Api\ChatController::class, 'markDelivered']);
         Route::get('chat/history/{userId}', [\App\Http\Controllers\Api\ChatController::class, 'chatHistory']);
         Route::post('chat/delete', [\App\Http\Controllers\Api\ChatController::class, 'deleteMessages']);
+        Route::post('chat/block', [\App\Http\Controllers\Api\ChatController::class, 'blockUser']);
+        Route::post('chat/unblock', [\App\Http\Controllers\Api\ChatController::class, 'unblockUser']);
     });
 });

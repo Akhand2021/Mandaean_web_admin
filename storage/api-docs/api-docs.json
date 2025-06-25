@@ -440,35 +440,13 @@
                 ]
             }
         },
-        "/chat/active-users": {
-            "get": {
-                "tags": [
-                    "Chat"
-                ],
-                "summary": "Get active users for chat",
-                "operationId": "67360736a0eae1c59acee639c36d53b7",
-                "responses": {
-                    "200": {
-                        "description": "List of active users"
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    },
-                    {
-                        "bearer_token": []
-                    }
-                ]
-            }
-        },
-        "/chat/last-seen/{userId}": {
+        "/api/chat/last-seen/{userId}": {
             "get": {
                 "tags": [
                     "Chat"
                 ],
                 "summary": "Get last seen for a user",
-                "operationId": "b83ad25e635e8b8f84d40ecdd69b7327",
+                "operationId": "e7cd6ea7ee123880ec93a95caf2b5257",
                 "parameters": [
                     {
                         "name": "userId",
@@ -494,13 +472,13 @@
                 ]
             }
         },
-        "/chat/send": {
+        "/api/chat/send": {
             "post": {
                 "tags": [
                     "Chat"
                 ],
                 "summary": "Send a chat message",
-                "operationId": "ff6d5c365276cdcb2d613fca96b953d6",
+                "operationId": "cb796b4b9626a6b3f7b423542f6e2907",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -538,13 +516,13 @@
                 ]
             }
         },
-        "/chat/mark-delivered": {
+        "/api/chat/mark-delivered": {
             "post": {
                 "tags": [
                     "Chat"
                 ],
                 "summary": "Mark messages as delivered",
-                "operationId": "fbbfa7f80078e331b1a83b95e0267a0e",
+                "operationId": "619a8a13937e2f203015ff26600d02e7",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -578,13 +556,13 @@
                 ]
             }
         },
-        "/chat/history/{userId}": {
+        "/api/chat/history/{userId}": {
             "get": {
                 "tags": [
                     "Chat"
                 ],
                 "summary": "Get paginated chat history with a user",
-                "operationId": "96ff35475b18317433c68c7ab27a01d0",
+                "operationId": "7a4a58bf207ab29f756c2be658ad1c4c",
                 "parameters": [
                     {
                         "name": "userId",
@@ -618,13 +596,13 @@
                 ]
             }
         },
-        "/chat/delete": {
+        "/api/chat/delete": {
             "post": {
                 "tags": [
                     "Chat"
                 ],
                 "summary": "Bulk delete chat messages",
-                "operationId": "ee4b0785f3c157505933ff5602315f79",
+                "operationId": "fac1389bb55ffe3fa6e5deebe936a1a1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -646,6 +624,182 @@
                 "responses": {
                     "200": {
                         "description": "Messages deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/chat/block": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Block a user from chat",
+                "description": "Block a user from chatting",
+                "operationId": "590a511424484bf0e43b611ec3bc99f8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "blocked_user_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User blocked"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/chat/unblock": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Unblock a user from chat",
+                "description": "Unblock a user from chatting",
+                "operationId": "9d6a41b4dae4a0e5ed3a05913eac4f65",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "blocked_user_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User unblocked"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/chat/all-users": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get all users except self and blocked",
+                "description": "Fetch all users (except self and blocked), with is_active key and pagination",
+                "operationId": "ccd5586916441390933591470ee019ca",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of all users except self and blocked"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/chat/chatted-users": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get users who have chatted with the current user",
+                "description": "Fetch only users who have chatted with the current user, with is_active key and pagination",
+                "operationId": "344e5a0e3e37015596bec6643606d523",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of users who have chatted with the current user"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/chat/mark-read": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Mark messages as read",
+                "operationId": "f812315ab950086200872b15cf5a4db3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "message_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Messages marked as read"
                     }
                 },
                 "security": [

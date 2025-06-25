@@ -13,37 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ChatController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/chat/active-users",
-     *     summary="Get active users for chat",
-     *     tags={"Chat"},
-     *     security={{"apiKey":{}}, {"bearer_token":{}}},
-     *     @OA\Response(response=200, description="List of active users")
-     * )
-     */
-    // Get active users (users who have sent/received messages recently)
-    public function activeUsers(Request $request)
-    {
-        $userId = Auth::id();
-        // Get IDs of users blocked by or who have blocked the current user
-        $blockedIds = Block::where('user_id', $userId)
-            ->pluck('blocked_user_id')
-            ->merge(Block::where('blocked_user_id', $userId)->pluck('user_id'));
-        $activeThreshold = now()->subMinutes(5);
-        $users = User::where('id', '!=', $userId)
-            ->where('last_seen', '>=', $activeThreshold)
-            ->whereNotIn('id', $blockedIds)
-            ->whereHas('messages', function ($q) use ($userId) {
-                $q->where('sender_id', $userId)->orWhere('receiver_id', $userId);
-            })
-            ->get();
-        return response()->json($users);
-    }
 
     /**
      * @OA\Get(
-     *     path="/chat/last-seen/{userId}",
+     *     path="/api/chat/last-seen/{userId}",
      *     summary="Get last seen for a user",
      *     tags={"Chat"},
      *     security={{"apiKey":{}}, {"bearer_token":{}}},
@@ -60,7 +33,7 @@ class ChatController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/chat/send",
+     *     path="/api/chat/send",
      *     summary="Send a chat message",
      *     tags={"Chat"},
      *     security={{"apiKey":{}}, {"bearer_token":{}}},
@@ -101,7 +74,7 @@ class ChatController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/chat/mark-delivered",
+     *     path="/api/chat/mark-delivered",
      *     summary="Mark messages as delivered",
      *     tags={"Chat"},
      *     security={{"apiKey":{}}, {"bearer_token":{}}},
@@ -127,7 +100,7 @@ class ChatController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/chat/history/{userId}",
+     *     path="/api/chat/history/{userId}",
      *     summary="Get paginated chat history with a user",
      *     tags={"Chat"},
      *     security={{"apiKey":{}}, {"bearer_token":{}}},
@@ -153,7 +126,7 @@ class ChatController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/chat/delete",
+     *     path="/api/chat/delete",
      *     summary="Bulk delete chat messages",
      *     tags={"Chat"},
      *     security={{"apiKey":{}}, {"bearer_token":{}}},
@@ -180,7 +153,7 @@ class ChatController extends Controller
      * Block a user from chatting
      *
      * @OA\Post(
-     *     path="/chat/block",
+     *     path="/api/chat/block",
      *     summary="Block a user from chat",
      *     tags={"Chat"},
      *     security={{"sanctum":{}}},
@@ -213,7 +186,7 @@ class ChatController extends Controller
      * Unblock a user from chatting
      *
      * @OA\Post(
-     *     path="/chat/unblock",
+     *     path="/api/chat/unblock",
      *     summary="Unblock a user from chat",
      *     tags={"Chat"},
      *     security={{"sanctum":{}}},
@@ -236,5 +209,93 @@ class ChatController extends Controller
             ->where('blocked_user_id', $request->blocked_user_id)
             ->delete();
         return response()->json(['status' => 'unblocked']);
+    }
+
+    /**
+     * Fetch all users (except self and blocked), with is_active key and pagination
+     * @OA\Get(
+     *     path="/api/chat/all-users",
+     *     summary="Get all users except self and blocked",
+     *     tags={"Chat"},
+     *     security={{"apiKey":{}}, {"bearer_token":{}}},
+     *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="List of all users except self and blocked")
+     * )    
+     */
+    public function allUsers(Request $request)
+    {
+        $userId = Auth::id();
+        $perPage = $request->get('per_page', 20);
+        $activeThreshold = now()->subMinutes(5);
+        $blockedIds = Block::where('user_id', $userId)
+            ->pluck('blocked_user_id')
+            ->merge(Block::where('blocked_user_id', $userId)->pluck('user_id'));
+        $users = User::where('id', '!=', $userId)
+            ->whereNotIn('id', $blockedIds)
+            ->orderByDesc('last_seen')
+            ->paginate($perPage);
+        $users->getCollection()->transform(function ($user) use ($activeThreshold) {
+            $user->is_active = $user->last_seen && $user->last_seen >= $activeThreshold;
+            return $user;
+        });
+        return response()->json($users);
+    }
+
+    /**
+     * Fetch only users who have chatted with the current user, with is_active key and pagination
+     * @OA\Get(
+     *     path="/api/chat/chatted-users",
+     *     summary="Get users who have chatted with the current user",
+     *     tags={"Chat"},
+     *     security={{"apiKey":{}}, {"bearer_token":{}}},
+     *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="List of users who have chatted with the current user")
+     * )    
+     */
+    public function chattedUsers(Request $request)
+    {
+        $userId = Auth::id();
+        $perPage = $request->get('per_page', 20);
+        $activeThreshold = now()->subMinutes(5);
+        $blockedIds = Block::where('user_id', $userId)
+            ->pluck('blocked_user_id')
+            ->merge(Block::where('blocked_user_id', $userId)->pluck('user_id'));
+        $users = User::where('id', '!=', $userId)
+            ->whereNotIn('id', $blockedIds)
+            ->whereHas('messages', function ($q) use ($userId) {
+                $q->where('sender_id', $userId)->orWhere('receiver_id', $userId);
+            })
+            ->orderByDesc('last_seen')
+            ->paginate($perPage);
+        $users->getCollection()->transform(function ($user) use ($activeThreshold) {
+            $user->is_active = $user->last_seen && $user->last_seen >= $activeThreshold;
+            return $user;
+        });
+        return response()->json($users);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/chat/mark-read",
+     *     summary="Mark messages as read",
+     *     tags={"Chat"},
+     *     security={{"apiKey":{}}, {"bearer_token":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message_ids", type="array", @OA\Items(type="integer"))
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Messages marked as read")
+     * )
+     */
+    public function markRead(Request $request)
+    {
+        $request->validate([
+            'message_ids' => 'required|array',
+        ]);
+        Message::whereIn('id', $request->message_ids)
+            ->update(['status' => 'read', 'read_at' => now()]);
+        return response()->json(['status' => 'read']);
     }
 }

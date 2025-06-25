@@ -131,5 +131,8 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::post('chat/delete', [\App\Http\Controllers\Api\ChatController::class, 'deleteMessages']);
         Route::post('chat/block', [\App\Http\Controllers\Api\ChatController::class, 'blockUser']);
         Route::post('chat/unblock', [\App\Http\Controllers\Api\ChatController::class, 'unblockUser']);
+        Route::get('chat/all-users', [\App\Http\Controllers\Api\ChatController::class, 'allUsers']);
+        Route::get('chat/chatted-users', [\App\Http\Controllers\Api\ChatController::class, 'chattedUsers']);
+        Route::post('chat/mark-read', [\App\Http\Controllers\Api\ChatController::class, 'markRead']);
     });
 });

@@ -61,7 +61,7 @@ class CategoryController extends Controller
      *     tags={"Mandanism"},
      *     summary="Get Mandanism Detail",
      *     operationId="mandanismDetail",
-     *     security={{"apiKey":{}}},
+     *     security={{"apiKey":{}}, {"bearer_token":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -98,11 +98,11 @@ class CategoryController extends Controller
     public function MandanismDetail($id)
     {
         $data = Mandanism::find($id);
-
+        // print_r($data->get());
         return response([
             'status' => true,
             'message' => 'Mandanism Detail.',
-            'data' => new MandanismDetailResource($data)
+            'data' =>  MandanismResource::collection($data->get())
         ], 201);
     }
 
@@ -138,7 +138,7 @@ class CategoryController extends Controller
      *     tags={"Holy Book"},
      *     summary="Get Holy Book List",
      *     operationId="holyBookList",
-     *     security={{"apiKey":{}}},
+     *     security={{"apiKey":{}}, {"bearer_token":{}}},
      *     @OA\Parameter(
      *         name="type",
      *         in="query",

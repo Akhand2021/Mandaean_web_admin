@@ -121,5 +121,13 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::post('inquiry-now', [InquiryController::class, 'InquiryNow']);
         Route::get('static-content', [StaticContentController::class, 'index']);
         Route::get('static-content/{id}', [StaticContentController::class, 'show']);
+
+        // Chat routes
+        Route::get('chat/active-users', [\App\Http\Controllers\Api\ChatController::class, 'activeUsers']);
+        Route::get('chat/last-seen/{userId}', [\App\Http\Controllers\Api\ChatController::class, 'lastSeen']);
+        Route::post('chat/send', [\App\Http\Controllers\Api\ChatController::class, 'sendMessage']);
+        Route::post('chat/mark-delivered', [\App\Http\Controllers\Api\ChatController::class, 'markDelivered']);
+        Route::get('chat/history/{userId}', [\App\Http\Controllers\Api\ChatController::class, 'chatHistory']);
+        Route::post('chat/delete', [\App\Http\Controllers\Api\ChatController::class, 'deleteMessages']);
     });
 });

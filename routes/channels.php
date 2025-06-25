@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('chat.{receiverId}', function ($user, $receiverId) {
+    // Only allow the authenticated user to listen to their own chat channel
+    return (int) $user->id === (int) $receiverId;
+});

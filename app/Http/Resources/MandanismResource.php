@@ -14,32 +14,44 @@ class MandanismResource extends JsonResource
      */
     public function toArray($request): array
     {
-        if($request->lang == 'ar'){
+        if ($request->lang == 'ar') {
             return [
                 'id'            => $this->id,
                 'title'         => $this->ar_title,
                 'group'         => $this->ar_group,
                 'date'          => $this->date,
+                'image'        =>  $this->image ? asset($this->image) : null,
+                'online_link'   => $this->online_link,
+                'docs'          => $this->docs ? asset($this->docs) : null,
+                'category'      => $this->category,
                 'description'   => strip_tags($this->ar_description),
-                'created_at'    => date("Y-m-d H:i:s",strtotime($this->created_at)),
+                'created_at'    => date("Y-m-d H:i:s", strtotime($this->created_at)),
             ];
-        }elseif ($request->lang == 'pe') {
+        } elseif ($request->lang == 'pe') {
             return [
                 'id'            => $this->id,
                 'title'         => $this->pe_title,
                 'group'         => $this->pe_group,
                 'date'          => $this->date,
+                'image'        =>  $this->image ? asset($this->image) : null,
+                'online_link'   => $this->online_link,
+                'docs'          => $this->docs ? asset($this->docs) : null,
+                'category'      => $this->category,
                 'description'   => strip_tags($this->pe_description),
-                'created_at'    => date("Y-m-d H:i:s",strtotime($this->created_at)),
+                'created_at'    => date("Y-m-d H:i:s", strtotime($this->created_at)),
             ];
-        }else{
+        } else {
             return [
                 'id'            => $this->id,
                 'title'         => $this->title,
                 'group'         => $this->group,
                 'date'          => $this->date,
+                'image'        =>  $this->image ? asset($this->image) : null,
+                'online_link'   => $this->online_link,
+                'docs'          => $this->docs ? asset($this->docs) : null,
+                'category'      => $this->category,
                 'description'   => strip_tags($this->description),
-                'created_at'    => date("Y-m-d H:i:s",strtotime($this->created_at)),
+                'created_at'    => date("Y-m-d H:i:s", strtotime($this->created_at)),
             ];
         }
     }

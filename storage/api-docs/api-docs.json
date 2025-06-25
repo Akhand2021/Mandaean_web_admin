@@ -379,6 +379,9 @@
                 "security": [
                     {
                         "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
                     }
                 ]
             }
@@ -430,6 +433,227 @@
                 "security": [
                     {
                         "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/chat/active-users": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get active users for chat",
+                "operationId": "67360736a0eae1c59acee639c36d53b7",
+                "responses": {
+                    "200": {
+                        "description": "List of active users"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/chat/last-seen/{userId}": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get last seen for a user",
+                "operationId": "b83ad25e635e8b8f84d40ecdd69b7327",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Last seen timestamp"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/chat/send": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Send a chat message",
+                "operationId": "ff6d5c365276cdcb2d613fca96b953d6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "receiver_id": {
+                                        "type": "integer"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "attachment": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Message sent"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/chat/mark-delivered": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Mark messages as delivered",
+                "operationId": "fbbfa7f80078e331b1a83b95e0267a0e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "message_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Messages marked as delivered"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/chat/history/{userId}": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get paginated chat history with a user",
+                "operationId": "96ff35475b18317433c68c7ab27a01d0",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated chat history"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/chat/delete": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Bulk delete chat messages",
+                "operationId": "ee4b0785f3c157505933ff5602315f79",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "message_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Messages deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
                     }
                 ]
             }
@@ -567,6 +791,10 @@
         {
             "name": "Holy Book",
             "description": "Holy Book"
+        },
+        {
+            "name": "Chat",
+            "description": "Chat"
         },
         {
             "name": "Static Content",

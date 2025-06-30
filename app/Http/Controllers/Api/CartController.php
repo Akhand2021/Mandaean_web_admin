@@ -18,7 +18,7 @@ class CartController extends Controller
      *     path="/api/add-to-cart",
      *     summary="Add item to cart",
      *     tags={"Cart"},
-     *     security={{"apiKey":{}}, {"bearer_token":{}}},
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -138,7 +138,7 @@ class CartController extends Controller
      *     path="/api/get-cart",
      *     summary="Get current user's cart",
      *     tags={"Cart"},
-     *     security={{"apiKey":{}}, {"bearer_token":{}}},
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=201,
      *         description="Cart Data.",
@@ -193,7 +193,7 @@ class CartController extends Controller
      *     path="/api/update-item",
      *     summary="Update item quantity in cart",
      *     tags={"Cart"},
-     *     security={{"apiKey":{}}, {"bearer_token":{}}},
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -276,7 +276,7 @@ class CartController extends Controller
      *     path="/api/delete-item",
      *     summary="Delete item(s) from cart",
      *     tags={"Cart"},
-     *     security={{"apiKey":{}}, {"bearer_token":{}}},
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -343,7 +343,7 @@ class CartController extends Controller
      *     path="/api/user-address",
      *     summary="Add or update user address for cart",
      *     tags={"Cart"},
-     *     security={{"apiKey":{}}, {"bearer_token":{}}},
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

@@ -12,6 +12,7 @@ use App\Models\Color;
 use App\Models\Size;
 use Validator;
 use Hash;
+use App\Helper\Helper;
 
 class ProductController extends Controller
 {
@@ -23,35 +24,35 @@ class ProductController extends Controller
         $data['filter'] = $request->filter;
         $adminuser = session()->get('adminuser');
         $data['sort_name'] = $adminuser->name;
-        $dataList = Product::with('images')->orderBy('id','desc');
+        $dataList = Product::with('images')->orderBy('id', 'desc');
         $search = $request->search;
-        if($search){
-            $dataList->where('name', 'LIKE', '%'.$search.'%')
-                ->orWhere('price', 'LIKE', '%'.$search.'%');
+        if ($search) {
+            $dataList->where('name', 'LIKE', '%' . $search . '%')
+                ->orWhere('price', 'LIKE', '%' . $search . '%');
         }
         $dataList = $dataList->get();
-        
+
         if ($request->ajax()) {
             return DataTables::of($dataList)
-                ->editColumn('image', function($row){
-                    if(count($row->images)>0){
-                        return '<img src="'.url('/').'/'.$row->images[0]->image.'">';
-                    }else{
+                ->editColumn('image', function ($row) {
+                    if (count($row->images) > 0) {
+                        return '<img src="' . url('/') . '/' . $row->images[0]->image . '">';
+                    } else {
                         return 'N/A';
                     }
                 })
-                ->addColumn('action', function($row){
-                    $editimg = asset('/').'public/assets/images/edit-round-line.png';
-                    $btn = '<a href="'.route('product.edit',$row->id).'" title="Edit"><label class="badge badge-gradient-dark">Edit</label></a> ';
-                    $delimg = asset('/').'public/assets/images/dlt-icon.png';
-                    $btn .= '<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" class="deldata" id="'.$row->id.'" title="Delete" onclick=\'setData('.$row->id.',"'.route('product.destroy',$row->id).'");\'><label class="badge badge-danger">Delete</label></a>';
+                ->addColumn('action', function ($row) {
+                    $editimg = asset('/') . 'public/assets/images/edit-round-line.png';
+                    $btn = '<a href="' . route('product.edit', $row->id) . '" title="Edit"><label class="badge badge-gradient-dark">Edit</label></a> ';
+                    $delimg = asset('/') . 'public/assets/images/dlt-icon.png';
+                    $btn .= '<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" class="deldata" id="' . $row->id . '" title="Delete" onclick=\'setData(' . $row->id . ',"' . route('product.destroy', $row->id) . '");\'><label class="badge badge-danger">Delete</label></a>';
                     return $btn;
                 })
-                ->rawColumns(['image','action'])
+                ->rawColumns(['image', 'action'])
                 ->make(true);
         }
 
-        return view('admin.product.index',['data'=>$data]);
+        return view('admin.product.index', ['data' => $data]);
     }
 
     /**
@@ -61,10 +62,10 @@ class ProductController extends Controller
     {
         $adminuser = session()->get('adminuser');
         $data['sort_name'] = $adminuser->name;
-        $data['brands'] = Brand::where('status','active')->get();
-        $data['colors'] = Color::where('status','active')->get();
-        $data['sizes'] = Size::where('status','active')->get();
-        return view('admin.product.create',['data'=>$data]);
+        $data['brands'] = Brand::where('status', 'active')->get();
+        $data['colors'] = Color::where('status', 'active')->get();
+        $data['sizes'] = Size::where('status', 'active')->get();
+        return view('admin.product.create', ['data' => $data]);
     }
 
     /**
@@ -91,7 +92,7 @@ class ProductController extends Controller
             // 'pe_material' => 'required',
             // 'pe_condition' => 'required',
             'photo' => 'required',
-        ],[
+        ], [
             'ar_name.required' => 'The name field is required.',
             'ar_category.required' => 'The category field is required.',
             'ar_material.required' => 'The material field is required.',
@@ -101,16 +102,14 @@ class ProductController extends Controller
             'pe_material.required' => 'The material field is required.',
             'pe_condition.required' => 'The condition field is required.',
         ]);
- 
-        if ($validator->fails())
-        {
+
+        if ($validator->fails()) {
             $messages = $validator->messages();
             return back()->withInput()->withErrors($messages);
-        }else{
+        } else {
             $sizeprice = $request->sizeprice;
-            foreach($sizeprice as $key=>$value)
-            {
-                if(is_null($value) || $value == '')
+            foreach ($sizeprice as $key => $value) {
+                if (is_null($value) || $value == '')
                     unset($sizeprice[$key]);
             }
             $sizeprice = array_map('floatval', array_values($sizeprice));
@@ -119,7 +118,7 @@ class ProductController extends Controller
             $product['name'] = $request->name;
             $product['category'] = $request->category;
             $product['sku'] = _getSKU();
-            $product['price'] = $request->price??$sizeprice[0];
+            $product['price'] = $request->price ?? $sizeprice[0];
             $product['inventory'] = $request->inventory;
             $product['color_ids'] = array_map('intval', $request->color);
             $product['size_ids'] = array_map('intval', $request->size);
@@ -127,23 +126,20 @@ class ProductController extends Controller
             $product['brand_id'] = $request->brand;
             $product['material'] = $request->material;
             $product['condition'] = $request->condition;
-            $product['ar_name'] = $request->ar_name;
-            $product['ar_category'] = $request->ar_category;
-            $product['ar_material'] = $request->ar_material;
-            $product['ar_condition'] = $request->ar_condition;
-            $product['pe_name'] = $request->pe_name;
-            $product['pe_category'] = $request->pe_category;
-            $product['pe_material'] = $request->pe_material;
-            $product['pe_condition'] = $request->pe_condition;
+            // $product['ar_name'] = $request->ar_name;
+            // $product['ar_category'] = $request->ar_category;
+            // $product['ar_material'] = $request->ar_material;
+            // $product['ar_condition'] = $request->ar_condition;
+            // $product['pe_name'] = $request->pe_name;
+            // $product['pe_category'] = $request->pe_category;
+            // $product['pe_material'] = $request->pe_material;
+            // $product['pe_condition'] = $request->pe_condition;
             $product->save();
 
-            if($request->hasfile('photo')){
+            if ($request->hasfile('photo')) {
                 foreach ($request->file('photo') as $key => $file) {
-                    $destinationPath = 'uploads/';
-                    $file_name = time().''.$file->getClientOriginalName();
-                    $file->move($destinationPath , $file_name);
-                    $imageName = $destinationPath.''.$file_name;
-                    ProductImage::create(['product_id'=>$product->id,'image'=>$imageName]);
+                    $imageName = upload_file_common($file);
+                    ProductImage::create(['product_id' => $product->id, 'image' => $imageName]);
                 }
             }
             return redirect('product')->with('message', 'Record Added!');
@@ -165,11 +161,11 @@ class ProductController extends Controller
     {
         $adminuser = session()->get('adminuser');
         $data['sort_name'] = $adminuser->name;
-        $data['brands'] = Brand::where('status','active')->get();
-        $data['colors'] = Color::where('status','active')->get();
-        $data['sizes'] = Size::where('status','active')->get();
+        $data['brands'] = Brand::where('status', 'active')->get();
+        $data['colors'] = Color::where('status', 'active')->get();
+        $data['sizes'] = Size::where('status', 'active')->get();
         $data['product'] = Product::with('images')->find($id);
-        return view('admin.product.edit',['data'=>$data]);
+        return view('admin.product.edit', ['data' => $data]);
     }
 
     /**
@@ -196,7 +192,7 @@ class ProductController extends Controller
             // 'pe_material' => 'required',
             // 'pe_condition' => 'required',
             // 'photo' => 'required',
-        ],[
+        ], [
             'ar_name.required' => 'The name field is required.',
             'ar_category.required' => 'The category field is required.',
             'ar_material.required' => 'The material field is required.',
@@ -206,16 +202,14 @@ class ProductController extends Controller
             'pe_material.required' => 'The material field is required.',
             'pe_condition.required' => 'The condition field is required.',
         ]);
- 
-        if ($validator->fails())
-        {
+
+        if ($validator->fails()) {
             $messages = $validator->messages();
             return back()->withInput()->withErrors($messages);
-        }else{
+        } else {
             $sizeprice = $request->sizeprice;
-            foreach($sizeprice as $key=>$value)
-            {
-                if(is_null($value) || $value == '')
+            foreach ($sizeprice as $key => $value) {
+                if (is_null($value) || $value == '')
                     unset($sizeprice[$key]);
             }
             $sizeprice = array_map('floatval', array_values($sizeprice));
@@ -223,7 +217,7 @@ class ProductController extends Controller
             $product = Product::find($id);
             $product['name'] = $request->name;
             $product['category'] = $request->category;
-            $product['price'] = $request->price??$sizeprice[0];
+            $product['price'] = $request->price ?? $sizeprice[0];
             $product['inventory'] = $request->inventory;
             $product['color_ids'] = array_map('intval', $request->color);
             $product['size_ids'] = array_map('intval', $request->size);
@@ -231,23 +225,20 @@ class ProductController extends Controller
             $product['brand_id'] = $request->brand;
             $product['material'] = $request->material;
             $product['condition'] = $request->condition;
-            $product['ar_name'] = $request->ar_name;
-            $product['ar_category'] = $request->ar_category;
-            $product['ar_material'] = $request->ar_material;
-            $product['ar_condition'] = $request->ar_condition;
-            $product['pe_name'] = $request->pe_name;
-            $product['pe_category'] = $request->pe_category;
-            $product['pe_material'] = $request->pe_material;
-            $product['pe_condition'] = $request->pe_condition;
+            // $product['ar_name'] = $request->ar_name;
+            // $product['ar_category'] = $request->ar_category;
+            // $product['ar_material'] = $request->ar_material;
+            // $product['ar_condition'] = $request->ar_condition;
+            // $product['pe_name'] = $request->pe_name;
+            // $product['pe_category'] = $request->pe_category;
+            // $product['pe_material'] = $request->pe_material;
+            // $product['pe_condition'] = $request->pe_condition;
             $product->save();
 
-            if($request->hasfile('photo')){
+            if ($request->hasfile('photo')) {
                 foreach ($request->file('photo') as $key => $file) {
-                    $destinationPath = 'uploads/';
-                    $file_name = time().''.$file->getClientOriginalName();
-                    $file->move($destinationPath , $file_name);
-                    $imageName = $destinationPath.''.$file_name;
-                    ProductImage::create(['product_id'=>$product->id,'image'=>$imageName]);
+                    $imageName = upload_file_common($file);
+                    ProductImage::create(['product_id' => $product->id, 'image' => $imageName]);
                 }
             }
             return redirect('product')->with('message', 'Record Updated!');
@@ -259,15 +250,16 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Product::where('id',$id)->delete();
-        ProductImage::where('product_id',$id)->delete();
-        
+        Product::where('id', $id)->delete();
+        ProductImage::where('product_id', $id)->delete();
+
         return true;
     }
 
-    public function RemoveImage(Request $request){
-        ProductImage::where('id',$request->id)->delete();
-        
+    public function RemoveImage(Request $request)
+    {
+        ProductImage::where('id', $request->id)->delete();
+
         return true;
     }
 }

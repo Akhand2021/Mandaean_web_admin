@@ -92,7 +92,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="color[]" value="{{$color->id}}" {{(in_array($color->id,$data['product']->color_ids))?"checked":""}}> {{$color->name}} 
+                                            <input type="checkbox" class="form-check-input" name="color[]" value="{{$color->id}}" {{(in_array($color->id,($data['product']->color_ids ?? [])))?"checked":""}}> {{$color->name}} 
                                         </label>
                                     </div>
                                 </div>
@@ -110,7 +110,7 @@
                             ?>
                             @foreach($data['sizes'] as $size)
                             <?php
-                            if(in_array($size->id,$data['product']->size_ids)){
+                            if(in_array($size->id,($data['product']->size_ids ?? []))){
                                 $value = $data['product']->sizeprice[$k];
                                 $k++;
                             }else{
@@ -120,9 +120,9 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input size-checkbox" id="size_{{$size->id}}" name="size[]" value="{{$size->id}}" {{(in_array($size->id,$data['product']->size_ids))?"checked":""}}> {{$size->name}} 
+                                            <input type="checkbox" class="form-check-input size-checkbox" id="size_{{$size->id}}" name="size[]" value="{{$size->id}}" {{(in_array($size->id,($data['product']->size_ids ?? [])))?"checked":""}}> {{$size->name}} 
                                         </label>
-                                        <input type="text" class="form-control" id="price_{{$size->id}}" name="sizeprice[]" placeholder="price" style="{{(in_array($size->id,$data['product']->size_ids))?'display:block':'display:none'}}" value="{{$value}}">
+                                        <input type="text" class="form-control" id="price_{{$size->id}}" name="sizeprice[]" placeholder="price" style="{{(in_array($size->id,($data['product']->size_ids ?? [])))?'display:block':'display:none'}}" value="{{$value}}">
                                     </div>
                                 </div>
                             @endforeach

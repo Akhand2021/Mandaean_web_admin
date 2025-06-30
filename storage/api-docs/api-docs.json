@@ -280,6 +280,352 @@
                 ]
             }
         },
+        "/api/add-to-cart": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Add item to cart",
+                "operationId": "914f332576261ec7b4b83fa267e75b61",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "product_id",
+                                    "color",
+                                    "size"
+                                ],
+                                "properties": {
+                                    "product_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "red"
+                                    },
+                                    "size": {
+                                        "type": "string",
+                                        "example": "M"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Item added.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error or not enough quantity."
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/get-cart": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Get current user's cart",
+                "operationId": "6ee4ac25bb03117b747b23869001a511",
+                "responses": {
+                    "201": {
+                        "description": "Cart Data.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Cart Empty."
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/update-item": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Update item quantity in cart",
+                "operationId": "c9bbce47683b2e5d1b9f21cd2d6ddda2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "item_id",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "item_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "type": {
+                                        "description": "add or remove",
+                                        "type": "string",
+                                        "example": "add"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Item updated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error or not enough quantity."
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/delete-item": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Delete item(s) from cart",
+                "operationId": "172a047478a8dafea3ac1fa041c0c408",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "item_id"
+                                ],
+                                "properties": {
+                                    "item_id": {
+                                        "description": "JSON array of item IDs as string",
+                                        "type": "string",
+                                        "example": "[1,2,3]"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Item deleted.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error."
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/user-address": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Add or update user address for cart",
+                "operationId": "db4b04890f14a98d5117f19b142c2956",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "code",
+                                    "mobile_no",
+                                    "first_address",
+                                    "second_address",
+                                    "state",
+                                    "city",
+                                    "postal_code"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "US"
+                                    },
+                                    "mobile_no": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "first_address": {
+                                        "type": "string",
+                                        "example": "123 Main St"
+                                    },
+                                    "second_address": {
+                                        "type": "string",
+                                        "example": "Apt 4B"
+                                    },
+                                    "state": {
+                                        "type": "string",
+                                        "example": "California"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "example": "Los Angeles"
+                                    },
+                                    "postal_code": {
+                                        "type": "string",
+                                        "example": "90001"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address added.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error."
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
         "/api/mandanism-list": {
             "get": {
                 "tags": [
@@ -812,6 +1158,143 @@
                 ]
             }
         },
+        "/api/product-list": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Product List",
+                "description": "Get a list of products with optional search and filter",
+                "operationId": "ceec9f9def393e58fd107c6419cf44c1",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term for product name or price",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter products by price (1: low to high, 2: high to low)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                1,
+                                2,
+                                3,
+                                4
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product List."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/product-detail/{id}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Product Detail",
+                "description": "Get Product Detail",
+                "operationId": "productDetail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product Detail."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Product Name"
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 99.99
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Product description here."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    },
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
         "/api/static-content": {
             "get": {
                 "tags": [
@@ -939,6 +1422,10 @@
             "description": "User Management"
         },
         {
+            "name": "Cart",
+            "description": "Cart"
+        },
+        {
             "name": "Mandanism",
             "description": "Mandanism"
         },
@@ -949,6 +1436,10 @@
         {
             "name": "Chat",
             "description": "Chat"
+        },
+        {
+            "name": "Product",
+            "description": "Product"
         },
         {
             "name": "Static Content",

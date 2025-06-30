@@ -8,6 +8,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Mandanism;
 use Validator;
 use Hash;
+use App\Helper\Helper;
 
 class MandanismController extends Controller
 {
@@ -107,21 +108,11 @@ class MandanismController extends Controller
             $mandanism['online_link'] = $request->online_link;
             if ($request->hasFile('image'))
             {
-                $destinationPath = 'uploads/';
-                $file = $request->file('image');
-                $file_name = time().''.$file->getClientOriginalName();
-                $file->move($destinationPath , $file_name);
-                $imageName = $destinationPath.''.$file_name;
-                $mandanism['image'] = $imageName;
+                $mandanism['image'] = upload_file_common($request->file('image'));
             }
             if ($request->hasFile('docs'))
             {
-                $destinationPath = 'uploads/';
-                $file = $request->file('docs');
-                $file_name = time().''.$file->getClientOriginalName();
-                $file->move($destinationPath , $file_name);
-                $imageName = $destinationPath.''.$file_name;
-                $mandanism['docs'] = $imageName;
+                $mandanism['docs'] = upload_file_common($request->file('docs'));
             }
             $mandanism->save();
             return redirect('mandanism')->with('message', 'Record Added!');
@@ -192,21 +183,11 @@ class MandanismController extends Controller
             $mandanism['online_link'] = $request->online_link;
             if ($request->hasFile('image'))
             {
-                $destinationPath = 'uploads/';
-                $file = $request->file('image');
-                $file_name = time().''.$file->getClientOriginalName();
-                $file->move($destinationPath , $file_name);
-                $imageName = $destinationPath.''.$file_name;
-                $mandanism['image'] = $imageName;
+                $mandanism['image'] = upload_file_common($request->file('image'));
             }
             if ($request->hasFile('docs'))
             {
-                $destinationPath = 'uploads/';
-                $file = $request->file('docs');
-                $file_name = time().''.$file->getClientOriginalName();
-                $file->move($destinationPath , $file_name);
-                $imageName = $destinationPath.''.$file_name;
-                $mandanism['docs'] = $imageName;
+                $mandanism['docs'] = upload_file_common($request->file('docs'));
             }
             $mandanism->save();
             return redirect('mandanism')->with('message', 'Record Updated!');

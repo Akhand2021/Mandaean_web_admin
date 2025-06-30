@@ -41,4 +41,13 @@ function _getSKU($code_len = '12')
     return $code;
 }
 
+function upload_file_common($file, $destinationPath = 'uploads/')
+{
+    $originalName = $file->getClientOriginalName();
+    $cleanName = preg_replace('/\s+/', '_', $originalName);
+    $file_name = time() . '_' . $cleanName;
+    $file->move($destinationPath, $file_name);
+    return $destinationPath . $file_name;
+}
+
 ?>

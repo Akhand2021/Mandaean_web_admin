@@ -26,8 +26,8 @@ class HolyBookResource extends JsonResource
                     'author'        => $this->author,
                     'title'         => $this->ar_title,
                     'description'   => $this->ar_description,
-                    'image'         => ($this->image) ? url('/') . '/public/' . $this->image : null,
-                    'url'           => ($this->url) ? url('/') . '/public/' . $this->url : null,
+                    'image'         => ($this->image) ? asset($this->image) : null,
+                    'doc'           => ($this->url) ? asset($this->url) : null,
                     'bookmark'      => ($book) ? 'yes' : 'no',
                 ];
             } elseif ($request->lang == 'pe') {
@@ -36,8 +36,8 @@ class HolyBookResource extends JsonResource
                     'author'        => $this->author,
                     'title'         => $this->pe_title,
                     'description'   => strip_tags($this->pe_description),
-                    'image'         => ($this->image) ? url('/') . '/public/' . $this->image : null,
-                    'url'           => ($this->url) ? url('/') . '/public/' . $this->url : null,
+                    'image'         => ($this->image) ? asset($this->image) : null,
+                    'doc'           => ($this->url) ? asset($this->url) : null,
                     'bookmark'      => ($book) ? 'yes' : 'no',
                 ];
             } else {
@@ -46,8 +46,8 @@ class HolyBookResource extends JsonResource
                     'author'        => $this->author,
                     'title'         => $this->title,
                     'description'   => strip_tags($this->description),
-                    'image'         => ($this->image) ? url('/') . '/public/' . $this->image : null,
-                    'url'           => ($this->url) ? url('/') . '/public/' . $this->url : null,
+                    'image'         => ($this->image) ? asset($this->image) : null,
+                    'doc'           => ($this->url) ? asset($this->url) : null,
                     'bookmark'      => ($book) ? 'yes' : 'no',
                 ];
             }
@@ -58,8 +58,8 @@ class HolyBookResource extends JsonResource
                     'author'        => $this->author,
                     'title'         => $this->other_ar_title,
                     'description'   => strip_tags($this->other_ar_description),
-                    'image'         => ($this->other_image) ? url('/') . '/public/' . $this->other_image : null,
-                    'url'           => ($this->other_url) ? url('/') . '/public/' . $this->other_url : null,
+                    'image'         => ($this->other_image) ? asset($this->other_image) : null,
+                    'doc'           => ($this->other_url) ? asset($this->other_url) : null,
                     'bookmark'      => ($book) ? 'yes' : 'no',
                 ];
             } elseif ($request->lang == 'pe') {
@@ -68,8 +68,8 @@ class HolyBookResource extends JsonResource
                     'author'        => $this->author,
                     'title'         => $this->other_pe_title,
                     'description'   => strip_tags($this->other_pe_description),
-                    'image'         => ($this->other_image) ? url('/') . '/public/' . $this->other_image : null,
-                    'url'           => ($this->other_url) ? url('/') . '/public/' . $this->other_url : null,
+                    'image'         => ($this->other_image) ? asset($this->other_image) : null,
+                    'doc'           => ($this->other_url) ? asset($this->other_url) : null,
                     'bookmark'      => ($book) ? 'yes' : 'no',
                 ];
             } else {
@@ -78,8 +78,8 @@ class HolyBookResource extends JsonResource
                     'author'        => $this->author,
                     'title'         => $this->other_title,
                     'description'   => strip_tags($this->other_description),
-                    'image'         => ($this->other_image) ? url('/') . '/public/' . $this->other_image : null,
-                    'url'           => ($this->other_url) ? url('/') . '/public/' . $this->other_url : null,
+                    'image'         => ($this->other_image) ? asset($this->other_image) : null,
+                    'doc'           => ($this->other_url) ? asset($this->other_url) : null,
                     'bookmark'      => ($book) ? 'yes' : 'no',
                 ];
             }

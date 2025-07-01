@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 use Twilio\Rest\Client;
 
@@ -21,7 +21,7 @@ class AuthController extends Controller
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      * @OA\Post(
      *     path="/api/login",
-     *     tags={"User Management"},
+     *     tags={"Auth Management"},
      *     summary="User login",
      *     security={{"apiKey":{}}},
      *     @OA\Parameter(
@@ -164,7 +164,7 @@ class AuthController extends Controller
     /**
      * @OA\Post(
      *     path="/api/signup",
-     *     tags={"User Management"},
+     *     tags={"Auth Management"},
      *     summary="Register a new user",
      *     security={{"apiKey":{}}},
      *     @OA\Parameter(
@@ -280,7 +280,7 @@ class AuthController extends Controller
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      * @OA\Post(
      *     path="/api/forgot",
-     *     tags={"User Management"},
+     *     tags={"Auth Management"},
      *     summary="Forgot password",
      *     security={{"apiKey":{}}},
      *     @OA\Parameter(
@@ -346,7 +346,7 @@ class AuthController extends Controller
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      * @OA\Post(
      *     path="/api/resend-otp",
-     *     tags={"User Management"},
+     *     tags={"Auth Management"},
      *     summary="Resend OTP",
      *     security={{"apiKey":{}}},
      *     @OA\Parameter(
@@ -424,7 +424,7 @@ class AuthController extends Controller
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      * @OA\Post(
      *     path="/api/verify-otp",
-     *     tags={"User Management"},
+     *     tags={"Auth Management"},
      *     summary="Verify OTP",
      *     security={{"apiKey":{}}},
      *     @OA\Parameter(
@@ -523,7 +523,7 @@ class AuthController extends Controller
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      * @OA\Post(
      *     path="/api/update-password",
-     *     tags={"User Management"},
+     *     tags={"Auth Management"},
      *     summary="Update user password",
      *     security={{"apiKey":{}}},
      *     @OA\Parameter(

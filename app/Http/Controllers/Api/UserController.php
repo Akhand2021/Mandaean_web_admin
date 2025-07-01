@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Auth;
-use Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -14,7 +14,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/profile",
-     *     tags={"User"},
+     *     tags={"User Management"},
      *     summary="Get User Profile",
      *     description="Retrieve the authenticated user's profile data.",
      *     security={{"apiKey":{}},{"bearerAuth": {}}}, 
@@ -61,7 +61,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/update-profile",
-     *     tags={"User"},
+     *     tags={"User Management"},
      *     summary="Update User Profile",
      *     description="Update the authenticated user's profile data.",
      *     security={{"apiKey":{}},{"bearerAuth": {}}},
@@ -152,7 +152,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/change-password",
-     *     tags={"User"},
+     *     tags={"User Management"},
      *     summary="Change User Password",
      *     description="Change the authenticated user's password.",
      *     security={{"apiKey":{}},{"bearerAuth": {}}},
@@ -235,7 +235,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @OA\Delete(
      *     path="/api/delete-account",
-     *     tags={"User"},
+     *     tags={"User Management"},
      *     summary="Delete User Account",
      *     description="Delete the authenticated user's account.",
      *     security={{"apiKey":{}},{"bearerAuth": {}}},

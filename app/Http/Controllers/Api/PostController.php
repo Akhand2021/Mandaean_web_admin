@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\Like;
 use App\Models\Comment;
@@ -26,8 +27,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['user', 'likes', 'comments', 'shares'])->latest()->paginate(10);
-        return response()->json($posts);
+        $posts = Post::with(['user', 'likes', 'comments.user', 'shares'])->latest()->paginate(10);
+        return PostResource::collection($posts);
     }
 
     /**
@@ -46,7 +47,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $post->load(['user', 'likes', 'comments.user', 'shares']);
-        return response()->json($post);
+        return new PostResource($post);
     }
 
     /**
@@ -90,7 +91,8 @@ class PostController extends Controller
             $data['image_url'] = 'uploads/community/' . $imageName;
         }
         $post = Post::create($data);
-        return response()->json($post, 201);
+        $post->load(['user', 'likes', 'comments.user', 'shares']);
+        return (new PostResource($post))->response()->setStatusCode(201);
     }
 
     /**
@@ -135,7 +137,8 @@ class PostController extends Controller
             $data['image_url'] = 'uploads/community/' . $imageName;
         }
         $post->update($data);
-        return response()->json($post);
+        $post->load(['user', 'likes', 'comments.user', 'shares']);
+        return new PostResource($post);
     }
 
     /**
@@ -250,10 +253,10 @@ class PostController extends Controller
      */
     public function myPosts()
     {
-        $posts = Post::with(['user', 'likes', 'comments', 'shares'])
+        $posts = Post::with(['user', 'likes', 'comments.user', 'shares'])
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(10);
-        return response()->json($posts);
+        return PostResource::collection($posts);
     }
 }

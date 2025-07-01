@@ -11,6 +11,32 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/api/profile",
+     *     tags={"User"},
+     *     summary="Get User Profile",
+     *     description="Retrieve the authenticated user's profile data.",
+     *     security={{"apiKey":{}},{"bearerAuth": {}}}, 
+     *    @OA\Response(
+     *        response=201,
+     *       description="User profile data retrieved successfully.",
+     *        @OA\JsonContent(
+     *           @OA\Property(property="status", type="boolean", example=true),
+     *          @OA\Property(property="message", type="string", example="User profile data."),
+     *        )
+     *    ),
+     *   @OA\Response(
+     *       response=422,
+     *      description="User not found.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="status", type="boolean", example=false),
+     *         @OA\Property(property="message", type="string", example="User not found."),
+     *        @OA\Property(property="data", type="object", example={})
+     *       )
+     *  )
+     * )
+     */
     public function profile(Request $request)
     {
         $id = Auth::id();
@@ -32,6 +58,47 @@ class UserController extends Controller
             ], 422);
         }
     }
+    /**
+     * @OA\Post(
+     *     path="/api/update-profile",
+     *     tags={"User"},
+     *     summary="Update User Profile",
+     *     description="Update the authenticated user's profile data.",
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"name", "email", "country_code", "mobile_no"},
+     *                 @OA\Property(property="name", type="string", example="John Doe"),
+     *                 @OA\Property(property="email", type="string", example="john@doe.com"),
+     *                 @OA\Property(property="country_code", type="string", example="91"),
+     *                 @OA\Property(property="mobile_no", type="string", example="1234567890"),
+     *                 @OA\Property(property="profile", type="string", format="binary", description="Profile image file")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User profile data updated successfully.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="User profile data updated."),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error or user not found.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation error message."),
+     *             @OA\Property(property="data", type="object", example={})
+     *         )
+     *     )
+     * )
+     * @OA\Tag(name="User")
+     */
 
     public function updateProfile(Request $request)
     {
@@ -69,14 +136,11 @@ class UserController extends Controller
         // $user->dob = $request->dob;
 
         if ($request->hasFile('profile')) {
-            $destinationPath = 'uploads/';
             $file = $request->file('profile');
-            $file_name = time() . '' . $file->getClientOriginalName();
-            $file->move('public/' . $destinationPath, $file_name);
-            $user->profile = $destinationPath . '' . $file_name;
+            $user->profile = upload_file_common($file, 'public/uploads/');
         }
         $user->save();
-        $user->profile = $user->profile ? url('/') . '/public/' . $user->profile : NULL;
+        $user->profile = $user->profile ?  asset($user->profile) : NULL;
 
         return response([
             'status' => true,
@@ -85,6 +149,40 @@ class UserController extends Controller
         ], 201);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/change-password",
+     *     tags={"User"},
+     *     summary="Change User Password",
+     *     description="Change the authenticated user's password.",
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="old_password", type="string", example="oldpassword123"),
+     *             @OA\Property(property="new_password", type="string", example="newpassword123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Password changed successfully.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Password changed successfully."),
+     *             @OA\Property(property="data", type="object", example={})
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error or user not found.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Old password does not match."),
+     *             @OA\Property(property="data", type="object", example={})
+     *         )
+     *     )
+     * )
+     */
     public function changePassword(Request $request)
     {
         $id = Auth::id();

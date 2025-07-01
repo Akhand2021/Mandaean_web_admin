@@ -55,4 +55,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Message::class, 'sender_id');
     }
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class);
+    }
+    public function likes()
+    {
+        return $this->hasMany(\App\Models\Like::class);
+    }
+    public function comments()
+    {
+        return $this->hasMany(\App\Models\Comment::class);
+    }
+    public function shares()
+    {
+        return $this->hasMany(\App\Models\Share::class);
+    }
+    public function friendSuggestionsSent()
+    {
+        return $this->hasMany(\App\Models\FriendSuggestion::class, 'user_id');
+    }
+    public function friendSuggestionsReceived()
+    {
+        return $this->hasMany(\App\Models\FriendSuggestion::class, 'suggested_friend_id');
+    }
 }

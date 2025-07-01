@@ -18,7 +18,9 @@ use App\Http\Controllers\Api\CalenderController;
 use App\Http\Controllers\Api\FuneralController;
 use App\Http\Controllers\Api\InquiryController;
 use App\Http\Controllers\Api\StaticContentController;
-
+use App\Http\Controllers\Api\MelvasheController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\FriendController;
 
 /*
 |--------------------------------------------------------------------------
@@ -134,5 +136,15 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::get('chat/all-users', [\App\Http\Controllers\Api\ChatController::class, 'allUsers']);
         Route::get('chat/chatted-users', [\App\Http\Controllers\Api\ChatController::class, 'chattedUsers']);
         Route::post('chat/mark-read', [\App\Http\Controllers\Api\ChatController::class, 'markRead']);
+
+        // Melvashe CRUD API
+        Route::apiResource('melvashe', MelvasheController::class);
+
+        Route::apiResource('posts', PostController::class);
+        Route::post('posts/{post}/like', [PostController::class, 'like']);
+        Route::post('posts/{post}/comment', [PostController::class, 'comment']);
+        Route::post('posts/{post}/share', [PostController::class, 'share']);
+        Route::apiResource('friends', FriendController::class)->except(['show']);
+        Route::get('my-posts', [PostController::class, 'myPosts']);
     });
 });

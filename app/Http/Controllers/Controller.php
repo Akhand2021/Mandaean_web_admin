@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(
- *    title="Mandaean Flutter App API",
+ *    title="Mandaean API",
  *    version="1.0.0",
  * )
  * @OA\SecurityScheme(

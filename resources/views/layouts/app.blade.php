@@ -317,6 +317,27 @@
               <i class="mdi mdi-account-box menu-icon"></i>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#community-pages" aria-expanded="false" aria-controls="community-pages">
+              <span class="menu-title">Community</span>
+              <i class="menu-arrow"></i>
+              <i class="mdi mdi-forum menu-icon"></i>
+            </a>
+            <div class="collapse" id="community-pages">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item {{ (Request::segment(1)=='posts')?'active':'' }}">
+                  <a class="nav-link" href="{{ url('posts') }}">
+                    <span class="menu-title">Posts</span>
+                  </a>
+                </li>
+                <li class="nav-item {{ (Request::segment(1)=='comments')?'active':'' }}">
+                  <a class="nav-link" href="{{ url('comments') }}">
+                    <span class="menu-title">Comments</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
         </ul>
       </nav>
       <div class="main-panel">

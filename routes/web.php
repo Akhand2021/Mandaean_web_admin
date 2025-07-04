@@ -26,7 +26,8 @@ use App\Http\Controllers\Admin\ProgramController;
 use App\Http\Controllers\Admin\ReligiousOccasionController;
 use App\Http\Controllers\Admin\InquiryController;
 use App\Http\Controllers\PaymentController;
-
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,11 +48,21 @@ Route::get('/cmd/{cmd}', function ($cmd) {
     Artisan::call($cmd);
     dd("run successfully");
 });
-Route::get('composer-update', function () {system('composer update');});
-Route::get('composer-install', function () {system('composer install');});
-Route::get('clear-cache', function () {echo Artisan::call('cache:clear');});
-Route::get('clear-config', function () {echo Artisan::call('config:clear');});
-Route::get('clear-route', function () {echo Artisan::call('route:clear');});
+Route::get('composer-update', function () {
+    system('composer update');
+});
+Route::get('composer-install', function () {
+    system('composer install');
+});
+Route::get('clear-cache', function () {
+    echo Artisan::call('cache:clear');
+});
+Route::get('clear-config', function () {
+    echo Artisan::call('config:clear');
+});
+Route::get('clear-route', function () {
+    echo Artisan::call('route:clear');
+});
 
 Route::get('/', function () {
     return redirect('login');
@@ -60,14 +71,13 @@ Route::get('/', function () {
 Route::get('static-page-app', [WebviewController::class, 'app_term']);
 Route::get('login', [LoginController::class, 'Login']);
 Route::post('login-data', [LoginController::class, 'index']);
-Route::get('verify/{token}', [AuthController::class,'verify']);
-Route::get('forgot-password/{token}', [AuthController::class,'forgotPassword']);
-Route::post('forgot-password', [AuthController::class,'updatePassword']);
-Route::get('delete-account', [LoginController::class,'deleteAccount']);
-Route::post('delete-account-post', [LoginController::class,'deleteAccountPost']);
+Route::get('verify/{token}', [AuthController::class, 'verify']);
+Route::get('forgot-password/{token}', [AuthController::class, 'forgotPassword']);
+Route::post('forgot-password', [AuthController::class, 'updatePassword']);
+Route::get('delete-account', [LoginController::class, 'deleteAccount']);
+Route::post('delete-account-post', [LoginController::class, 'deleteAccountPost']);
 
-Route::group(['middleware'=>['checklogin','preventBackHistory']],function()
-{
+Route::group(['middleware' => ['checklogin', 'preventBackHistory']], function () {
     Route::get('dashboard', [DashboardController::class, 'index']);
     Route::get('logout', [LoginController::class, 'logout']);
     Route::resource('users', UsersController::class);
@@ -79,7 +89,7 @@ Route::group(['middleware'=>['checklogin','preventBackHistory']],function()
     Route::resource('prayer', PrayerController::class);
     Route::resource('books', HolyBookController::class);
     Route::resource('product', ProductController::class);
-    Route::post('remove-image', [ProductController::class,'RemoveImage']);
+    Route::post('remove-image', [ProductController::class, 'RemoveImage']);
     Route::resource('orders', OrderController::class);
     Route::resource('transaction', TransactionController::class);
     Route::resource('static-content', StaticController::class);
@@ -91,9 +101,32 @@ Route::group(['middleware'=>['checklogin','preventBackHistory']],function()
     Route::resource('funeral', FuneralController::class);
     Route::resource('program', ProgramController::class);
     Route::resource('religious-occasion', ReligiousOccasionController::class);
-    Route::get('inquiry-reply/{id}', [InquiryController::class,'reply'])->name('inquiry.reply');
-    Route::post('inquiry-reply-post/{id}', [InquiryController::class,'replyPost'])->name('inquiry.reply.post');
+    Route::get('inquiry-reply/{id}', [InquiryController::class, 'reply'])->name('inquiry.reply');
+    Route::post('inquiry-reply-post/{id}', [InquiryController::class, 'replyPost'])->name('inquiry.reply.post');
     Route::resource('inquiry', InquiryController::class);
+
+    // Community - Posts
+    Route::resource('posts', PostController::class)->names([
+        'index' => 'admin.posts.index',
+        'create' => 'admin.posts.create',
+        'store' => 'admin.posts.store',
+        'show' => 'admin.posts.show',
+        'edit' => 'admin.posts.edit',
+        'update' => 'admin.posts.update',
+        'destroy' => 'admin.posts.destroy',
+    ]);
+    // Community - Comments
+    Route::resource('comments', CommentController::class)->names([
+        'index' => 'admin.comments.index',
+        'create' => 'admin.comments.create',
+        'store' => 'admin.comments.store',
+        'show' => 'admin.comments.show',
+        'edit' => 'admin.comments.edit',
+        'update' => 'admin.comments.update',
+        'destroy' => 'admin.comments.destroy',
+    ]);
+    // Optional: Route for listing comments of a specific post in admin
+    Route::get('posts/{post}/comments', [PostController::class, 'comments'])->name('admin.posts.comments');
 });
 
 Route::controller(PaymentController::class)

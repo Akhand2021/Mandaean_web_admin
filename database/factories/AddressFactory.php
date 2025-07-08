@@ -13,7 +13,7 @@ class AddressFactory extends Factory
     {
         return [
             'user_id' => \App\Models\User::factory(),
-            'address' => $this->faker->address,
+            // 'address' => $this->faker->address,
             'city' => $this->faker->city,
             'state' => $this->faker->state,
             'country' => $this->faker->country,

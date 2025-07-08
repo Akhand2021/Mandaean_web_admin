@@ -14,26 +14,29 @@ class PrayerResource extends JsonResource
      */
     public function toArray($request): array
     {
-        if($request->lang == 'ar'){
+        if ($request->lang == 'ar') {
             return [
                 'id'    => $this->id,
                 'title' => $this->ar_title,
                 'subtitle' => $this->ar_subtitle,
-                'url'      => ($this->docs)?url('/').'/public/'.$this->docs:null,
+                'description' => strip_tags($this->ar_description),
+                'url'      => ($this->docs) ? url('/') . '/public/' . $this->docs : null,
             ];
-        }elseif ($request->lang == 'pe') {
+        } elseif ($request->lang == 'pe') {
             return [
                 'id'    => $this->id,
                 'title' => $this->pe_title,
                 'subtitle' => $this->pe_subtitle,
-                'url'      => ($this->docs)?url('/').'/public/'.$this->docs:null,
+                'description' => strip_tags($this->pe_description),
+                'url'      => ($this->docs) ? url('/') . '/public/' . $this->docs : null,
             ];
-        }else{
+        } else {
             return [
                 'id'    => $this->id,
                 'title' => $this->title,
                 'subtitle' => $this->subtitle,
-                'url'      => ($this->docs)?url('/').'/public/'.$this->docs:null,
+                'description' => strip_tags($this->description),
+                'url'      => ($this->docs) ? url('/') . '/public/' . $this->docs : null,
             ];
         }
     }

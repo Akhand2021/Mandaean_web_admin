@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Comment')
-@section('pagetitle', 'COmment')
+@section('pagetitle', 'Comment')
 @section('content')
     <div class="content-wrapper">
         <div class="page-header">

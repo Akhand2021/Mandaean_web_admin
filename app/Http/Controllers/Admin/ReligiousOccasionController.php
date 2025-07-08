@@ -19,28 +19,28 @@ class ReligiousOccasionController extends Controller
         $data['filter'] = $request->filter;
         $adminuser = session()->get('adminuser');
         $data['sort_name'] = $adminuser->name;
-        $dataList = ReligiousOccasion::orderBy('year','asc');
+        $dataList = ReligiousOccasion::orderBy('year', 'asc');
         $search = $request->search;
-        if($search){
-            $dataList->where('year', 'LIKE', '%'.$search.'%')
-                ->orWhere('occasion', 'LIKE', '%'.$search.'%');
+        if ($search) {
+            $dataList->where('year', 'LIKE', '%' . $search . '%')
+                ->orWhere('occasion', 'LIKE', '%' . $search . '%');
         }
         $dataList = $dataList->get();
-        
+
         if ($request->ajax()) {
             return DataTables::of($dataList)
-                ->addColumn('action', function($row){
-                    $editimg = asset('/').'public/assets/images/edit-round-line.png';
-                    $btn = '<a href="'.route('religious-occasion.edit',$row->id).'" title="Edit"><label class="badge badge-gradient-dark">Edit</label></a> ';
-                    $delimg = asset('/').'public/assets/images/dlt-icon.png';
-                    $btn .= '<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" class="deldata" id="'.$row->id.'" title="Delete" onclick=\'setData('.$row->id.',"'.route('religious-occasion.destroy',$row->id).'");\'><label class="badge badge-danger">Delete</label></a>';
+                ->addColumn('action', function ($row) {
+                    $editimg = asset('/') . 'public/assets/images/edit-round-line.png';
+                    $btn = '<a href="' . route('religious-occasion.edit', $row->id) . '" title="Edit"><label class="badge badge-gradient-dark">Edit</label></a> ';
+                    $delimg = asset('/') . 'public/assets/images/dlt-icon.png';
+                    $btn .= '<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" class="deldata" id="' . $row->id . '" title="Delete" onclick=\'setData(' . $row->id . ',"' . route('religious-occasion.destroy', $row->id) . '");\'><label class="badge badge-danger">Delete</label></a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
-        return view('admin.religious.index',['data'=>$data]);
+        return view('admin.religious.index', ['data' => $data]);
     }
 
     /**
@@ -50,7 +50,7 @@ class ReligiousOccasionController extends Controller
     {
         $adminuser = session()->get('adminuser');
         $data['sort_name'] = $adminuser->name;
-        return view('admin.religious.create',['data'=>$data]);
+        return view('admin.religious.create', ['data' => $data]);
     }
 
     /**
@@ -71,20 +71,20 @@ class ReligiousOccasionController extends Controller
         //     'pe_group.required' => 'The group field is required.',
         //     'pe_description.required' => 'The description field is required.',
         // ]);
- 
+
         // if ($validator->fails())
         // {
         //     $messages = $validator->messages();
         //     return back()->withInput()->withErrors($messages);
         // }else{
-            $religious = new ReligiousOccasion();
-            $religious['date'] = date('Y-m-d',strtotime($request->year.'-'.$request->month.'-'.$request->day));
-            $religious['year'] = $request->year;
-            $religious['date_type'] = $request->date_type;
-            $religious['occasion'] = $request->occasion;
-            $religious['occasion_type'] = $request->occasion_type;
-            $religious->save();
-            return redirect('religious-occasion')->with('message', 'Record Added!');
+        $religious = new ReligiousOccasion();
+        $religious['date'] = date('Y-m-d', strtotime($request->year . '-' . $request->month . '-' . $request->day));
+        $religious['year'] = $request->year;
+        $religious['date_type'] = $request->date_type;
+        $religious['occasion'] = $request->occasion;
+        $religious['occasion_type'] = $request->occasion_type;
+        $religious->save();
+        return redirect('religious-occasion')->with('message', 'Record Added!');
         // }
     }
 
@@ -104,7 +104,7 @@ class ReligiousOccasionController extends Controller
         $adminuser = session()->get('adminuser');
         $data['sort_name'] = $adminuser->name;
         $data['religious'] = ReligiousOccasion::find($id);
-        return view('admin.religious.edit',['data'=>$data]);
+        return view('admin.religious.edit', ['data' => $data]);
     }
 
     /**
@@ -124,20 +124,20 @@ class ReligiousOccasionController extends Controller
         //     'pe_group.required' => 'The group field is required.',
         //     'pe_description.required' => 'The description field is required.',
         // ]);
- 
+
         // if ($validator->fails())
         // {
         //     $messages = $validator->messages();
         //     return back()->withInput()->withErrors($messages);
         // }else{
-            $religious = ReligiousOccasion::find($id);
-            $religious['date'] = date('Y-m-d',strtotime($request->year.'-'.$request->month.'-'.$request->day));
-            $religious['year'] = $request->year;
-            $religious['date_type'] = $request->date_type;
-            $religious['occasion'] = $request->occasion;
-            $religious['occasion_type'] = $request->occasion_type;
-            $religious->save();
-            return redirect('religious-occasion')->with('message', 'Record Updated!');
+        $religious = ReligiousOccasion::find($id);
+        $religious['date'] = date('Y-m-d', strtotime($request->year . '-' . $request->month . '-' . $request->day));
+        $religious['year'] = $request->year;
+        $religious['date_type'] = $request->date_type;
+        $religious['occasion'] = $request->occasion;
+        $religious['occasion_type'] = $request->occasion_type;
+        $religious->save();
+        return redirect('religious-occasion')->with('message', 'Record Updated!');
         // }
     }
 
@@ -146,6 +146,6 @@ class ReligiousOccasionController extends Controller
      */
     public function destroy(string $id)
     {
-        return ReligiousOccasion::where('id',$id)->delete();
+        return ReligiousOccasion::where('id', $id)->delete();
     }
 }

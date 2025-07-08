@@ -21,6 +21,8 @@ use App\Http\Controllers\Api\StaticContentController;
 use App\Http\Controllers\Api\MelvasheController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\FriendController;
+use App\Http\Controllers\Api\AudioController;
+use App\Http\Controllers\Api\ReligiousOccasionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -146,5 +148,11 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::post('posts/{post}/share', [PostController::class, 'share']);
         Route::apiResource('friends', FriendController::class)->except(['show']);
         Route::get('my-posts', [PostController::class, 'myPosts']);
+        Route::get('audios', [AudioController::class, 'index']);
     });
+
+    // API route for getting all audio files
+    Route::get('prayers', [App\Http\Controllers\Api\PrayerController::class, 'index']);
+    Route::get('religious-occasions', [ReligiousOccasionController::class, 'index']);
+    Route::get('religious-occasions/{id}', [ReligiousOccasionController::class, 'show']);
 });

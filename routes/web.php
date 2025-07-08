@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\InquiryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\AudioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +128,17 @@ Route::group(['middleware' => ['checklogin', 'preventBackHistory']], function ()
     ]);
     // Optional: Route for listing comments of a specific post in admin
     Route::get('posts/{post}/comments', [PostController::class, 'comments'])->name('admin.posts.comments');
+
+    // Audio upload & assignment
+    Route::resource('audio', AudioController::class)->names([
+        'index' => 'admin.audio.index',
+        'create' => 'admin.audio.create',
+        'store' => 'admin.audio.store',
+        'show' => 'admin.audio.show',
+        'edit' => 'admin.audio.edit',
+        'update' => 'admin.audio.update',
+        'destroy' => 'admin.audio.destroy',
+    ]);
 });
 
 Route::controller(PaymentController::class)

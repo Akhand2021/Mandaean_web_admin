@@ -83,6 +83,8 @@ Route::group(['middleware' => ['apiKey']], function () {
     Route::get('online-video-detail/{id}', [CategoryController::class, 'OnlineVideoDetail']);
 
     Route::middleware('auth:sanctum')->group(function () {
+
+        Route::post('logout', [AuthController::class, 'logout']);
         Route::post('profile', [UserController::class, 'profile']);
         Route::post('update-profile', [UserController::class, 'updateProfile']);
         Route::post('change-password', [UserController::class, 'changePassword']);
@@ -97,6 +99,9 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::post('user-address', [CartController::class, 'userAddress']);
         Route::get('order-history', [OrderController::class, 'orderHistory']);
         Route::get('order-detail/{id}', [OrderController::class, 'orderDetail']);
+
+        // Add create-order route
+        Route::post('create-order', [OrderController::class, 'createOrder']);
 
         Route::get('baptism-venue', [BaptismController::class, 'BaptismVenue']);
         Route::post('book-baptism', [BaptismController::class, 'BookBaptism']);
@@ -149,10 +154,9 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::apiResource('friends', FriendController::class)->except(['show']);
         Route::get('my-posts', [PostController::class, 'myPosts']);
         Route::get('audios', [AudioController::class, 'index']);
+        // API route for getting all audio files
+        Route::get('prayers', [App\Http\Controllers\Api\PrayerController::class, 'index']);
+        Route::get('religious-occasions', [ReligiousOccasionController::class, 'index']);
+        Route::get('religious-occasions/{id}', [ReligiousOccasionController::class, 'show']);
     });
-
-    // API route for getting all audio files
-    Route::get('prayers', [App\Http\Controllers\Api\PrayerController::class, 'index']);
-    Route::get('religious-occasions', [ReligiousOccasionController::class, 'index']);
-    Route::get('religious-occasions/{id}', [ReligiousOccasionController::class, 'show']);
 });

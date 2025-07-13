@@ -11,5 +11,13 @@ class Prayer extends Model
 
     protected $table = 'prayers';
 
-    protected $guards = [];
+    protected $guarded = [];
+
+    // Optionally, you can specify fillable fields instead:
+    // protected $fillable = [
+    //     'title', 'subtitle', 'description', 'other_info', 'docs',
+    //     'ar_title', 'ar_subtitle', 'ar_description', 'ar_other_info',
+    //     'pe_title', 'pe_subtitle', 'pe_description', 'pe_other_info',
+    //     'prayer_time', 'prayer_type', 'prayer_date', 'status'
+    // ];
 }

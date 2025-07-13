@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+
     /**
      * @OA\Get(
      *     path="/api/posts",

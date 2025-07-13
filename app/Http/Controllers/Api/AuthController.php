@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\TransientToken;
 use Exception;
 use Twilio\Rest\Client;
+use Laravel\Sanctum\PersonalAccessToken;
+
 
 class AuthController extends Controller
 {
@@ -597,5 +600,36 @@ class AuthController extends Controller
         } else {
             return '<h1>Token is expired or Link not Found</h1>';
         }
+    }
+
+    /**
+     * @OA\Post(
+     * path="/api/logout",
+     * tags={"Auth Management"},
+     * summary="Logout user (revoke token)",
+     * security={{"apiKey":{}},{"bearerAuth": {}}},
+     * @OA\Response(response="200", description="User logged out successfully"),
+     * @OA\Response(response="401", description="Unauthenticated")
+     * )
+     */
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        if ($request->hasHeader('Authorization')) {
+            // Token-based
+            $user?->currentAccessToken()?->delete();
+        } else {
+            // Session-based
+            auth()->guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Logged out successfully.',
+            'data' => []
+        ], 200);
     }
 }

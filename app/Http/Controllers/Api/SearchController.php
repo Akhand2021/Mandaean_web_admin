@@ -18,26 +18,33 @@ class SearchController extends Controller
      *     tags={"Search"},
      *     summary="Search Products and Mandanism Categories",
      *     description="Search for products and mandanism categories based on the search term.",
-     *     security={{"apiKey":{}},{"bearerAuth": {}}}, 
-     *    @OA\Response(
-     *        response=201,
-     *       description="Search results fetched successfully.",
-     *        @OA\JsonContent(
-     *           @OA\Property(property="status", type="boolean", example=true),
-     *          @OA\Property(property="message", type="string", example="Data fetched."),
-     *          @OA\Property(property="data", type="array", @OA\Items(type="object")),
-     *          @OA\Property(property="recent_search", type="array", @OA\Items(type="string"))
-     *        )
-     *    ),
-     *   @OA\Response(
-     *       response=422,
-     *      description="No search found or validation error.",
-     *      @OA\JsonContent(
-     *          @OA\Property(property="status", type="boolean", example=false),
-     *         @OA\Property(property="message", type="string", example="No search found."),
-     *        @OA\Property(property="data", type="array", @OA\Items(type="object"))
-     *       )
-     *  )
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         required=true,
+     *         description="Search term for products and mandanism categories.",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Search results fetched successfully.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Data fetched."),
+     *             @OA\Property(property="data", type="array", @OA\Items(type="object")),
+     *             @OA\Property(property="recent_search", type="array", @OA\Items(type="string"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="No search found or validation error.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="No search found."),
+     *             @OA\Property(property="data", type="array", @OA\Items(type="object"))
+     *         )
+     *     )
      * )
      */
     public function Search(Request $request)

@@ -7,14 +7,23 @@ use Illuminate\Http\Request;
 use App\Models\Melvashe;
 use Illuminate\Support\Facades\Validator;
 
+
 class MelvasheController extends Controller
 {
+
     /**
      * @OA\Get(
      *     path="/api/melvashe",
      *     tags={"Melvashe"},
      *     summary="Get all Melvashe records",
      *     security={{"apiKey":{}},{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=false,
+     *         description="Force response as JSON",
+     *         @OA\Schema(type="string", default="application/json")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="List of Melvashe records."

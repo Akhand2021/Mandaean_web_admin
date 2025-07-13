@@ -65,7 +65,9 @@ class PrayerController extends Controller
             'title' => 'required|max:200',
             'subtitle' => 'required',
             'description' => 'required',
-            'type' => 'required|in:morning,afternoon,evening',
+            'prayer_time' => 'required|in:morning,afternoon,evening',
+            'prayer_type' => 'required|in:Barkha,Reshma,Monday',
+            'prayer_date' => 'required|date',
             // 'other_info' => 'required',
             // 'ar_title' => 'required',
             // 'ar_subtitle' => 'required',
@@ -95,7 +97,9 @@ class PrayerController extends Controller
             $prayer['title'] = $request->title;
             $prayer['subtitle'] = $request->subtitle;
             $prayer['description'] = $request->description;
-            $prayer['type'] = $request->type;
+            $prayer['prayer_time'] = $request->prayer_time;
+            $prayer['prayer_type'] = $request->prayer_type;
+            $prayer['prayer_date'] = $request->prayer_date;
             // $prayer['other_info'] = $request->other_info;
             $prayer['ar_title'] = $request->ar_title;
             $prayer['ar_subtitle'] = $request->ar_subtitle;
@@ -142,11 +146,14 @@ class PrayerController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:200',
             'subtitle' => 'required',
             'description' => 'required',
-            'type' => 'required|in:morning,afternoon,evening',
+            'prayer_time' => 'required|in:morning,afternoon,evening',
+            'prayer_type' => 'required|in:Barkha,Reshma,Monday',
+            'prayer_date' => 'required|date',
             // 'other_info' => 'required',
             // 'ar_title' => 'required',
             // 'ar_subtitle' => 'required',
@@ -175,7 +182,9 @@ class PrayerController extends Controller
             $prayer['title'] = $request->title;
             $prayer['subtitle'] = $request->subtitle;
             $prayer['description'] = $request->description;
-            $prayer['type'] = $request->type;
+            $prayer['prayer_time'] = $request->prayer_time;
+            $prayer['prayer_type'] = $request->prayer_type;
+            $prayer['prayer_date'] = $request->prayer_date;
             // $prayer['other_info'] = $request->other_info;
             $prayer['ar_title'] = $request->ar_title;
             $prayer['ar_subtitle'] = $request->ar_subtitle;

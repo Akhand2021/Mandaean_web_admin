@@ -16,6 +16,13 @@ class ReligiousOccasionController extends Controller
      *     tags={"Religious Occasions"},
      *     summary="Get all religious occasions",
      *     security={{"apiKey":{}},{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="year",
+     *         in="query",
+     *         required=false,
+     *         description="Filter occasions by year (defaults to current year)",
+     *         @OA\Schema(type="integer", example=2025)
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="List of religious occasions.",
@@ -36,7 +43,8 @@ class ReligiousOccasionController extends Controller
      */
     public function index(Request $request)
     {
-        $occasions = ReligiousOccasion::orderBy('year', 'asc')->get();
+        $year = $request->get('year', date('Y'));
+        $occasions = ReligiousOccasion::where('year', $year)->orderBy('year', 'asc')->get();
         return response()->json([
             'success' => true,
             'data' => $occasions

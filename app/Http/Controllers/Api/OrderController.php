@@ -178,7 +178,7 @@ class OrderController extends Controller
     {
         $id = Auth::id();
         $validator = Validator::make($request->all(), [
-            'address_id' => 'required|exists:addresses,id'
+            'address_id' => 'required|exists:user_addresses,id'
         ]);
         if ($validator->fails()) {
             $error = $validator->errors()->first();

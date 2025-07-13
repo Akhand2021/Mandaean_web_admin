@@ -24,11 +24,11 @@
                         @csrf
                         <h4 align="center">English Language</h4><br />
                         <div class="form-group col-sm-12">
-                            <label>PDF/Video</label>
+                            <label>Audio</label>
                             <input type="file" name="docs" class="file-upload-default">
                             <div class="input-group col-xs-12">
                                 <input type="text" class="form-control file-upload-info" disabled
-                                    placeholder="Upload PDF/Video">
+                                    placeholder="Upload Audio">
                                 <span class="input-group-append">
                                     <button class="file-upload-browse btn btn-gradient-primary"
                                         type="button">Upload</button>
@@ -61,12 +61,12 @@
                             @enderror
                         </div>
                         <!-- <div class="form-group col-sm-12">
-                            <label for="exampleInputEmail3">Other Info</label>
-                            <textarea class="form-control" id="other_info" name="other_info" placeholder="Description" rows="5">{{ old('other_info') }}</textarea>
-                            @error('other_info')
+                                                                    <label for="exampleInputEmail3">Other Info</label>
+                                                                    <textarea class="form-control" id="other_info" name="other_info" placeholder="Description" rows="5">{{ old('other_info') }}</textarea>
+                                                                    @error('other_info')
         <p style="color: red">{{ $message }}</p>
     @enderror
-                        </div> -->
+                                                                </div> -->
 
                         <h4 align="center">Arabic Language</h4><br />
                         <div class="form-group col-sm-12">
@@ -92,12 +92,12 @@
                             @enderror
                         </div>
                         <!-- <div class="form-group col-sm-12">
-                            <label for="exampleInputEmail3">Other Info</label>
-                            <textarea class="form-control" id="ar_other_info" name="ar_other_info" placeholder="Description" rows="5">{{ old('ar_other_info') }}</textarea>
-                            @error('ar_other_info')
+                                                                    <label for="exampleInputEmail3">Other Info</label>
+                                                                    <textarea class="form-control" id="ar_other_info" name="ar_other_info" placeholder="Description" rows="5">{{ old('ar_other_info') }}</textarea>
+                                                                    @error('ar_other_info')
         <p style="color: red">{{ $message }}</p>
     @enderror
-                        </div> -->
+                                                                </div> -->
 
                         <h4 align="center">Persian Language</h4><br />
                         <div class="form-group col-sm-12">
@@ -123,21 +123,47 @@
                             @enderror
                         </div>
                         <!-- <div class="form-group col-sm-12">
-                            <label for="exampleInputEmail3">Other Info</label>
-                            <textarea class="form-control" id="pe_other_info" name="pe_other_info" placeholder="Description" rows="5">{{ old('pe_other_info') }}</textarea>
-                            @error('pe_other_info')
+                                                                    <label for="exampleInputEmail3">Other Info</label>
+                                                                    <textarea class="form-control" id="pe_other_info" name="pe_other_info" placeholder="Description" rows="5">{{ old('pe_other_info') }}</textarea>
+                                                                    @error('pe_other_info')
         <p style="color: red">{{ $message }}</p>
     @enderror
-                        </div> -->
+                                                                </div> -->
                         <div class="form-group mb-3">
-                            <label for="type">Prayer Type</label>
-                            <select name="type" id="type" class="form-control" required>
+                            <label for="prayer_time">Prayer Type</label>
+                            <select name="prayer_time" id="prayer_time" class="form-control" required>
                                 <option value="">-- Select Type --</option>
                                 <option value="morning" {{ old('type') == 'morning' ? 'selected' : '' }}>Morning</option>
                                 <option value="afternoon" {{ old('type') == 'afternoon' ? 'selected' : '' }}>Afternoon
                                 </option>
                                 <option value="evening" {{ old('type') == 'evening' ? 'selected' : '' }}>Evening</option>
                             </select>
+                            @error('prayer_time')
+                                <p style="color: red">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="prayer_type">Prayer Type</label>
+                            <select name="prayer_type" id="prayer_type" class="form-control" required>
+                                <option value="">-- Select Type --</option>
+                                <option value="Barkha" {{ old('type') == 'Barkha' ? 'selected' : '' }}>Barkha
+                                </option>
+                                <option value="Reshma" {{ old('type') == 'Reshma' ? 'selected' : '' }}>
+                                    Reshma</option>
+                                <option value="Monday" {{ old('type') == 'Monday' ? 'selected' : '' }}>Monday
+                                </option>
+                            </select>
+                            @error('prayer_type')
+                                <p style="color: red">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="type">Prayer Date</label>
+                            <input type="date" name="prayer_date" id="prayer_date" class="form-control"
+                                value="{{ old('prayer_date') }}" required>
+                            @error('prayer_date')
+                                <p style="color: red">{{ $message }}</p>
+                            @enderror
                         </div>
                         <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
                         <a href="{{ url('prayer') }}" class="btn btn-light">Cancel</a>

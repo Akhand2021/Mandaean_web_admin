@@ -279,6 +279,24 @@ class ChatController extends Controller
      *     @OA\Response(response=200, description="List of users who have chatted with the current user")
      * )    
      */
+    // public function chattedUsers(Request $request)
+    // {
+    //     $userId = Auth::id();
+    //     $perPage = $request->get('per_page', 20);
+
+    //     $users = User::where('id', '!=', $userId)
+    //         ->whereNotIn('id', $this->getBlockedUserIds($userId))
+    //         ->whereHas('messages', function ($q) use ($userId) {
+    //             $q->where('sender_id', $userId)->orWhere('receiver_id', $userId);
+    //         })
+    //         ->orderByDesc('last_seen')
+    //         ->paginate($perPage);
+
+    //     $this->transformUsers($users);
+
+    //     return response()->json($users);
+    // }
+
     public function chattedUsers(Request $request)
     {
         $userId = Auth::id();
@@ -286,8 +304,12 @@ class ChatController extends Controller
 
         $users = User::where('id', '!=', $userId)
             ->whereNotIn('id', $this->getBlockedUserIds($userId))
-            ->whereHas('messages', function ($q) use ($userId) {
-                $q->where('sender_id', $userId)->orWhere('receiver_id', $userId);
+            ->where(function ($query) use ($userId) {
+                $query->whereHas('sentMessages', function ($q) use ($userId) {
+                    $q->where('receiver_id', $userId);
+                })->orWhereHas('receivedMessages', function ($q) use ($userId) {
+                    $q->where('sender_id', $userId);
+                });
             })
             ->orderByDesc('last_seen')
             ->paginate($perPage);
@@ -296,7 +318,6 @@ class ChatController extends Controller
 
         return response()->json($users);
     }
-
     /**
      * @OA\Post(
      *     path="/api/chat/mark-read",

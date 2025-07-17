@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\AudioController;
 use App\Http\Controllers\Api\ReligiousOccasionController;
+use App\Http\Controllers\TermsAndConditionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +82,8 @@ Route::group(['middleware' => ['apiKey']], function () {
     Route::get('online-article-detail/{id}', [CategoryController::class, 'OnlineArticleDetail']);
     Route::get('online-videos', [CategoryController::class, 'OnlineVideos']);
     Route::get('online-video-detail/{id}', [CategoryController::class, 'OnlineVideoDetail']);
+
+    Route::apiResource('terms-and-conditions', TermsAndConditionsController::class);
 
     Route::middleware('auth:sanctum')->group(function () {
 

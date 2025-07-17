@@ -359,6 +359,12 @@
                             <i class="mdi mdi-music menu-icon"></i>
                         </a>
                     </li>
+                    <li class="nav-item {{ \Request::segment(1) == 'terms-and-conditions' ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ url('terms-and-conditions') }}">
+                            <span class="menu-title">Terms & Conditions</span>
+                            <i class="mdi mdi-file-document-box menu-icon"></i>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <div class="main-panel">

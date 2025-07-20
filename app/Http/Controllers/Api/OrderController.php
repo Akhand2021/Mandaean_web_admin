@@ -215,7 +215,7 @@ class OrderController extends Controller
                 'color' => $item->color,
             ]);
         }
-        $cart->status = 'ordered';
+        $cart->status = 'inactive';
         $cart->save();
         return response([
             'status' => true,

@@ -133,7 +133,7 @@ class ChatController extends Controller
         $authId = Auth::id();
         $perPage = $request->get('per_page', 20);
 
-        $messages = Message::where(function ($query) use ($authId, $userId) {
+        $messages = Message::with("sender", "receiver")->where(function ($query) use ($authId, $userId) {
             $query->where('sender_id', $authId)->where('receiver_id', $userId);
         })->orWhere(function ($query) use ($authId, $userId) {
             $query->where('sender_id', $userId)->where('receiver_id', $authId);

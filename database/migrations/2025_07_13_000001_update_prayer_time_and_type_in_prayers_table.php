@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::table('prayers', function (Blueprint $table) {
             $table->dropColumn('type');
             $table->enum('prayer_time', ['morning', 'afternoon', 'evening'])->nullable()->after('pe_other_info');
-            $table->enum('prayer_type', ['Barkha', 'Reshma', 'Monday'])->nullable()->after('prayer_time');
-            $table->date('prayer_date')->nullable()->after('prayer_type');
+            $table->enum('prayer_type', ['Barkha', 'Reshma', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])->nullable()->after('prayer_time');
         });
     }
 

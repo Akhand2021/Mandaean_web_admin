@@ -86,6 +86,7 @@ Route::group(['middleware' => ['apiKey']], function () {
     Route::apiResource('terms-and-conditions', TermsAndConditionsController::class);
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/fcm-token', [UserController::class, 'saveToken']);
 
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('profile', [UserController::class, 'profile']);

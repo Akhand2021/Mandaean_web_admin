@@ -70,12 +70,12 @@
                             @enderror
                         </div>
                         <!-- <div class="form-group col-sm-12">
-                                                                <label for="exampleInputEmail3">Other Info</label>
-                                                                <textarea class="form-control" id="other_info" name="other_info" placeholder="Description" rows="5">{{ old('other_info', $data['prayer']->other_info) }}</textarea>
-                                                                @error('other_info')
+                                                                    <label for="exampleInputEmail3">Other Info</label>
+                                                                    <textarea class="form-control" id="other_info" name="other_info" placeholder="Description" rows="5">{{ old('other_info', $data['prayer']->other_info) }}</textarea>
+                                                                    @error('other_info')
         <p style="color: red">{{ $message }}</p>
     @enderror
-                                                            </div> -->
+                                                                </div> -->
 
                         <h4 align="center">Arabic Language</h4><br />
                         <div class="form-group col-sm-12">
@@ -101,12 +101,12 @@
                             @enderror
                         </div>
                         <!-- <div class="form-group col-sm-12">
-                                                                <label for="exampleInputEmail3">Other Info</label>
-                                                                <textarea class="form-control" id="ar_other_info" name="ar_other_info" placeholder="Description" rows="5">{{ old('ar_other_info', $data['prayer']->ar_other_info) }}</textarea>
-                                                                @error('ar_other_info')
+                                                                    <label for="exampleInputEmail3">Other Info</label>
+                                                                    <textarea class="form-control" id="ar_other_info" name="ar_other_info" placeholder="Description" rows="5">{{ old('ar_other_info', $data['prayer']->ar_other_info) }}</textarea>
+                                                                    @error('ar_other_info')
         <p style="color: red">{{ $message }}</p>
     @enderror
-                                                            </div> -->
+                                                                </div> -->
 
                         <h4 align="center">Persian Language</h4><br />
                         <div class="form-group col-sm-12">
@@ -132,12 +132,12 @@
                             @enderror
                         </div>
                         <!-- <div class="form-group col-sm-12">
-                                                                <label for="exampleInputEmail3">Other Info</label>
-                                                                <textarea class="form-control" id="pe_other_info" name="pe_other_info" placeholder="Description" rows="5">{{ old('pe_other_info', $data['prayer']->pe_other_info) }}</textarea>
-                                                                @error('pe_other_info')
+                                                                    <label for="exampleInputEmail3">Other Info</label>
+                                                                    <textarea class="form-control" id="pe_other_info" name="pe_other_info" placeholder="Description" rows="5">{{ old('pe_other_info', $data['prayer']->pe_other_info) }}</textarea>
+                                                                    @error('pe_other_info')
         <p style="color: red">{{ $message }}</p>
     @enderror
-                                                            </div> -->
+                                                                </div> -->
                         <div class="form-group mb-3">
                             <label for="prayer_time">Prayer Time</label>
                             <select name="prayer_time" id="prayer_time" class="form-control" required>
@@ -168,11 +168,11 @@
                                     Monday</option>
                             </select>
                         </div>
-                        <div class="form-group mb-3">
+                        {{-- <div class="form-group mb-3">
                             <label for="type">Prayer Date</label>
                             <input type="date" name="prayer_date" id="prayer_date" class="form-control"
                                 value="{{ old('prayer_date', $data['prayer']->prayer_date) }}" required>
-                        </div>
+                        </div> --}}
                         <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
                         <a href="{{ url('prayer') }}" class="btn btn-light">Cancel</a>
                     </form>

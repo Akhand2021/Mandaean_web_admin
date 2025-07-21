@@ -279,4 +279,45 @@ class UserController extends Controller
             ], 422);
         }
     }
+    /**
+     * @OA\Post(
+     *    path="/api/fcm-token",
+     *   tags={"User Management"},
+     *    summary="Save FCM Token",
+     *    description="Save the user's FCM token for push notifications.",
+     *    security={{"apiKey":{}},{"bearerAuth": {}}},
+     *    @OA\RequestBody(
+     *        required=true,
+     *       @OA\JsonContent(
+     *           @OA\Property(property="fcm_token", type="string", example="your_fcm_token_here")
+     *       )
+     *    ),
+     *   @OA\Response(
+     *       response=200,
+     *      description="FCM Token saved successfully.",
+     *      @OA\JsonContent(
+     *           @OA\Property(property="message", type="string", example="FCM Token saved.")
+     *       )
+     *    ),
+     *    @OA\Response(
+     *        response=422,
+     *        description="Validation error.",
+     *        @OA\JsonContent(
+     *            @OA\Property(property="message", type="string", example="The fcm token field is required.")
+     *        )
+     *    )
+     * )
+     */
+    public function saveToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required|string',
+        ]);
+
+        $user = auth()->user(); // or use ID
+        $user->fcm_token = $request->fcm_token;
+        $user->save();
+
+        return response()->json(['message' => 'FCM Token saved.']);
+    }
 }

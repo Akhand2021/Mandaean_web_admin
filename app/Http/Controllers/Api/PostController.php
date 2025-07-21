@@ -10,6 +10,9 @@ use App\Models\Comment;
 use App\Models\Share;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\PushNotificationService;
+use Illuminate\Support\Str;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -80,7 +83,9 @@ class PostController extends Controller
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
         $data['user_id'] = Auth::id();
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '_' . preg_replace('/\s+/', '_', $image->getClientOriginalName());
@@ -91,10 +96,31 @@ class PostController extends Controller
             $image->move($destination, $imageName);
             $data['image_url'] = 'uploads/community/' . $imageName;
         }
+
         $post = Post::create($data);
         $post->load(['user', 'likes', 'comments.user', 'shares']);
+
+        // ✅ Send Push Notification to all other users
+        $tokens = User::where('id', '!=', Auth::id())
+            ->whereNotNull('fcm_token')
+            ->pluck('fcm_token')
+            ->toArray();
+
+        if (!empty($tokens)) {
+            app(PushNotificationService::class)->sendNotification(
+                $tokens,
+                '📢 New Community Post!',
+                $post->user->name . ' just posted: ' . Str::limit($post->content, 50),
+                [
+                    'post_id' => $post->id,
+                    'user_id' => $post->user_id
+                ]
+            );
+        }
+
         return (new PostResource($post))->response()->setStatusCode(201);
     }
+
 
     /**
      * @OA\Put(

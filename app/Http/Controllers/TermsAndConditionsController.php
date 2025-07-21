@@ -46,8 +46,9 @@ class TermsAndConditionsController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-        } else {
-            return response()->json(new TermsAndConditionCollection($terms->get()));
+        } elseif ($request->header(('X-API_KEY'))) {
+
+            return  TermsAndConditionCollection::collection($terms->get());
         }
 
         return view('admin.terms.index', ['data' => ['sort_name' => '']]);

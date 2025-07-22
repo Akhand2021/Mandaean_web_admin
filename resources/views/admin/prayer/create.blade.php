@@ -61,12 +61,12 @@
                             @enderror
                         </div>
                         <!-- <div class="form-group col-sm-12">
-                                                                                    <label for="exampleInputEmail3">Other Info</label>
-                                                                                    <textarea class="form-control" id="other_info" name="other_info" placeholder="Description" rows="5">{{ old('other_info') }}</textarea>
-                                                                                    @error('other_info')
+                                                                                            <label for="exampleInputEmail3">Other Info</label>
+                                                                                            <textarea class="form-control" id="other_info" name="other_info" placeholder="Description" rows="5">{{ old('other_info') }}</textarea>
+                                                                                            @error('other_info')
         <p style="color: red">{{ $message }}</p>
     @enderror
-                                                                                </div> -->
+                                                                                        </div> -->
 
                         <h4 align="center">Arabic Language</h4><br />
                         <div class="form-group col-sm-12">
@@ -92,12 +92,12 @@
                             @enderror
                         </div>
                         <!-- <div class="form-group col-sm-12">
-                                                                                    <label for="exampleInputEmail3">Other Info</label>
-                                                                                    <textarea class="form-control" id="ar_other_info" name="ar_other_info" placeholder="Description" rows="5">{{ old('ar_other_info') }}</textarea>
-                                                                                    @error('ar_other_info')
+                                                                                            <label for="exampleInputEmail3">Other Info</label>
+                                                                                            <textarea class="form-control" id="ar_other_info" name="ar_other_info" placeholder="Description" rows="5">{{ old('ar_other_info') }}</textarea>
+                                                                                            @error('ar_other_info')
         <p style="color: red">{{ $message }}</p>
     @enderror
-                                                                                </div> -->
+                                                                                        </div> -->
 
                         <h4 align="center">Persian Language</h4><br />
                         <div class="form-group col-sm-12">
@@ -123,20 +123,23 @@
                             @enderror
                         </div>
                         <!-- <div class="form-group col-sm-12">
-                                                                                    <label for="exampleInputEmail3">Other Info</label>
-                                                                                    <textarea class="form-control" id="pe_other_info" name="pe_other_info" placeholder="Description" rows="5">{{ old('pe_other_info') }}</textarea>
-                                                                                    @error('pe_other_info')
+                                                                                            <label for="exampleInputEmail3">Other Info</label>
+                                                                                            <textarea class="form-control" id="pe_other_info" name="pe_other_info" placeholder="Description" rows="5">{{ old('pe_other_info') }}</textarea>
+                                                                                            @error('pe_other_info')
         <p style="color: red">{{ $message }}</p>
     @enderror
-                                                                                </div> -->
+                                                                                        </div> -->
                         <div class="form-group mb-3">
-                            <label for="prayer_time">Prayer Type</label>
-                            <select name="prayer_time" id="prayer_time" class="form-control" required>
-                                <option value="">-- Select Type --</option>
-                                <option value="morning" {{ old('type') == 'morning' ? 'selected' : '' }}>Morning</option>
-                                <option value="afternoon" {{ old('type') == 'afternoon' ? 'selected' : '' }}>Afternoon
+                            <label for="prayer_time">Prayer Time</label>
+                            <select name="prayer_time" id="prayer_time" class="form-control">
+                                <option value="">-- Select Time --</option>
+                                <option value="morning" {{ old('prayer_time') == 'morning' ? 'selected' : '' }}>Morning
                                 </option>
-                                <option value="evening" {{ old('type') == 'evening' ? 'selected' : '' }}>Evening</option>
+                                <option value="afternoon" {{ old('prayer_time') == 'afternoon' ? 'selected' : '' }}>
+                                    Afternoon
+                                </option>
+                                <option value="evening" {{ old('prayer_time') == 'evening' ? 'selected' : '' }}>Evening
+                                </option>
                             </select>
                             @error('prayer_time')
                                 <p style="color: red">{{ $message }}</p>

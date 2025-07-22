@@ -36,7 +36,7 @@ class PrayerController extends Controller
     {
         $query = Prayer::query();
 
-        // Build the where conditions properly
+        // Filter prayers by day if provided
         if ($request->has('day')) {
             $query->where(function ($q) use ($request) {
                 $q->where('prayer_type', $request->day)
@@ -47,34 +47,54 @@ class PrayerController extends Controller
             $query->whereIn('prayer_type', ['Barkha', 'Reshma']);
         }
 
-        $prayers = $query->select('id', 'title', 'subtitle', 'description', 'prayer_time', 'prayer_type', 'prayer_date', 'other_info', 'ar_title', 'ar_subtitle', 'ar_description', 'pe_other_info')
+        $prayers = $query->select(
+            'id',
+            'title',
+            'subtitle',
+            'description',
+            'prayer_time',
+            'prayer_type',
+            'prayer_date',
+            'other_info',
+            'ar_title',
+            'ar_subtitle',
+            'ar_description',
+            'pe_other_info'
+        )
             ->orderBy('prayer_date', 'desc')
             ->orderBy('created_at', 'desc')
-            ->get(); // Execute the query here, not later
+            ->get();
 
         $result = [];
-        $prayerTypes = ['Barkha', 'Reshma', $request->day];
         $prayerTimes = ['morning', 'afternoon', 'evening'];
 
-        // Group prayers by prayer_type first
+        // Build prayerTypes list based on input
+        $prayerTypes = ['Barkha', 'Reshma'];
+        if ($request->filled('day')) {
+            $prayerTypes[] = $request->day;
+        }
+
+        // Group by type
         $groupedByType = $prayers->groupBy('prayer_type');
 
         foreach ($prayerTypes as $type) {
-            $result[$type] = [];
-
-            // Get prayers for this specific type
             $prayersForType = $groupedByType->get($type, collect());
 
-            // Then group by prayer_time
-            $groupedByTime = $prayersForType->groupBy('prayer_time');
+            if (in_array($type, ['Barkha', 'Reshma'])) {
+                // Group by prayer_time for Barkha & Reshma
+                $groupedByTime = $prayersForType->groupBy('prayer_time');
+                $result[$type] = [];
 
-            foreach ($prayerTimes as $prayer_time) {
-                $result[$type][$prayer_time] = PrayerResource::collection(
-                    $groupedByTime->get($prayer_time, collect())
-                );
+                foreach ($prayerTimes as $prayer_time) {
+                    $result[$type][$prayer_time] = PrayerResource::collection(
+                        $groupedByTime->get($prayer_time, collect())
+                    );
+                }
+            } else {
+                // For weekday types, no prayer_time grouping
+                $result[$type] = PrayerResource::collection($prayersForType);
             }
         }
-
 
         return response()->json($result);
     }

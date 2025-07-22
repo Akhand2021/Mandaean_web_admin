@@ -12,7 +12,8 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            // Add other user fields as needed
+            'profile' => $this->profile,
+            'mobile_no' => $this->mobile_no
         ];
     }
 }

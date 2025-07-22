@@ -37,7 +37,8 @@
                                 <label for="exampleInputName1">Year</label>
                                 <select name="year" class="form-select">
                                     @for ($i = 1921; $i <= 2121; $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        <option value="{{ $i }}" {{ $i == date('Y') ? 'selected' : '' }}>
+                                            {{ $i }}</option>
                                     @endfor
                                 </select>
                                 @error('year')
@@ -48,7 +49,8 @@
                                 <label for="exampleInputName1">Year</label>
                                 <select name="year" class="form-select">
                                     @for ($i = 1300; $i <= 1500; $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        <option value="{{ $i }}" {{ $i == date('Y') ? 'selected' : '' }}>
+                                            {{ $i }}</option>
                                     @endfor
                                 </select>
                                 @error('year')
@@ -59,7 +61,7 @@
                                 <label for="exampleInputName1">Month</label>
                                 <select name="month" class="form-select">
                                     @for ($j = 1; $j <= 12; $j++)
-                                        <option value="{{ $j }}">
+                                        <option value="{{ $j }}" {{ $j == date('n') ? 'selected' : '' }}>
                                             {{ date('F', strtotime('01-' . $j . '-2023')) }}
                                         </option>
                                     @endfor
@@ -72,7 +74,8 @@
                                 <label for="exampleInputName1">Day</label>
                                 <select name="day" class="form-select">
                                     @for ($z = 1; $z <= 31; $z++)
-                                        <option value="{{ $z }}">{{ $z }}</option>
+                                        <option value="{{ $z }}" {{ $z == date('j') ? 'selected' : '' }}>
+                                            {{ $z }}</option>
                                     @endfor
                                 </select>
                                 @error('day')
@@ -127,6 +130,23 @@
                 $(".Gregorian-div").show();
                 $(".Solar-div").hide();
             }
+        });
+
+        function toggleYearDropdown() {
+            var dateType = $('#date_type').val();
+            if (dateType === 'Gregorian') {
+                $('.Gregorian-div select[name="year"]').prop('disabled', false);
+                $('.Solar-div select[name="year"]').prop('disabled', true);
+            } else {
+                $('.Gregorian-div select[name="year"]').prop('disabled', true);
+                $('.Solar-div select[name="year"]').prop('disabled', false);
+            }
+        }
+        $(document).ready(function() {
+            toggleYearDropdown();
+            $('#date_type').on('change', function() {
+                toggleYearDropdown();
+            });
         });
     </script>
 @endsection

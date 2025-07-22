@@ -27,7 +27,7 @@ class User extends Authenticatable
         'otp_time',
         'dob',
         'gender',
-        'last_seen', // add last_seen to fillable
+        'last_seen',
     ];
 
     /**
@@ -90,5 +90,13 @@ class User extends Authenticatable
     public function receivedMessages()
     {
         return $this->hasMany(\App\Models\Message::class, 'receiver_id');
+    }
+    /**
+     * Define the relationship with the Story model.
+     * This allows a user to have multiple stories.
+     */
+    public function stories()
+    {
+        return $this->hasMany(Story::class);
     }
 }

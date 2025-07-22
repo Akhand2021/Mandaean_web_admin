@@ -33,6 +33,11 @@ return [
     'firebase' => [
         'project_id' => env('FIREBASE_PROJECT_ID'),
     ],
+    'auspost' => [
+        'key' => env('AUSPOST_API_KEY'),
+        'url' => env('AUSPOST_API_URL', 'https://digitalapi.auspost.com.au'),
+    ],
+
 
 
 ];

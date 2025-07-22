@@ -195,18 +195,18 @@
                                         <!-- <i class="mdi mdi-information menu-icon"></i> -->
                                     </a>
                                 </li>
-                                <li class="nav-item {{ \Request::segment(1) == 'ritual' ? 'active' : '' }}">
+                                {{-- <li class="nav-item {{ \Request::segment(1) == 'ritual' ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ url('ritual') }}">
                                         <span class="menu-title">Ritual Mgmt</span>
                                         <!-- <i class="mdi mdi-information menu-icon"></i> -->
                                     </a>
-                                </li>
-                                <li class="nav-item {{ \Request::segment(1) == 'news' ? 'active' : '' }}">
+                                </li> --}}
+                                {{-- <li class="nav-item {{ \Request::segment(1) == 'news' ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ url('news') }}">
                                         <span class="menu-title">Latest News Mgmt</span>
                                         <!-- <i class="mdi mdi-information menu-icon"></i> -->
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item {{ \Request::segment(1) == 'prayer' ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ url('prayer') }}">
                                         <span class="menu-title">Prayer Mgmt</span>
@@ -219,18 +219,18 @@
                                         <!-- <i class="mdi mdi-book-multiple menu-icon"></i> -->
                                     </a>
                                 </li>
-                                <li class="nav-item {{ \Request::segment(1) == 'program' ? 'active' : '' }}">
+                                {{-- <li class="nav-item {{ \Request::segment(1) == 'program' ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ url('program') }}">
                                         <span class="menu-title">Program Mgmt</span>
                                         <!-- <i class="mdi mdi-book-multiple menu-icon"></i> -->
                                     </a>
-                                </li>
-                                <li class="nav-item {{ \Request::segment(1) == 'advertisment' ? 'active' : '' }}">
+                                </li> --}}
+                                {{-- <li class="nav-item {{ \Request::segment(1) == 'advertisment' ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ url('advertisment') }}">
                                         <span class="menu-title">Advertisment Mgmt</span>
                                         <!-- <i class="mdi mdi-information menu-icon"></i> -->
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </li>
@@ -270,12 +270,12 @@
                             <i class="mdi mdi-apps menu-icon"></i>
                         </a>
                     </li>
-                    <li class="nav-item {{ \Request::segment(1) == 'funeral' ? 'active' : '' }}">
+                    {{-- <li class="nav-item {{ \Request::segment(1) == 'funeral' ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('funeral') }}">
                             <span class="menu-title">Funeral Management</span>
                             <i class="mdi mdi-account-box menu-icon"></i>
                         </a>
-                    </li>
+                    </li> --}}
                     {{-- Commented due to new update is not needed in this section. --}}
                     {{-- <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#baptism-pages" aria-expanded="false" aria-controls="category-pages">
@@ -327,7 +327,7 @@
                     </li>
                     <li class="nav-item {{ \Request::segment(1) == 'religious-occasion' ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('religious-occasion') }}">
-                            <span class="menu-title">Religious Occasion</span>
+                            <span class="menu-title">Calendar</span>
                             <i class="mdi mdi-account-box menu-icon"></i>
                         </a>
                     </li>

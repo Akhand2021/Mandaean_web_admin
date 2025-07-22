@@ -24,10 +24,40 @@ class FriendController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $sent = $user->friendSuggestionsSent()->with('suggestedFriend')->get();
-        $received = $user->friendSuggestionsReceived()->with('user')->get();
-        return response()->json(['sent' => $sent, 'received' => $received]);
+
+        $sent = $user->friendSuggestionsSent()
+            ->with('suggestedFriend')
+            ->where('status', 'pending')
+            ->get();
+
+        $received = $user->friendSuggestionsReceived()
+            ->with('user')
+            ->where('status', 'pending')
+            ->get();
+
+        $accepted = FriendSuggestion::where(function ($q) use ($user) {
+            $q->where('user_id', $user->id)
+                ->orWhere('suggested_friend_id', $user->id);
+        })->where('status', 'accepted')
+            ->with(['user', 'suggestedFriend'])
+            ->get();
+
+        // Optional: auto-suggestions excluding friends & requests
+        $excludeIds = $accepted->pluck('user_id')
+            ->merge($accepted->pluck('suggested_friend_id'))
+            ->merge([$user->id])
+            ->unique();
+
+        $autoSuggestions = \App\Models\User::whereNotIn('id', $excludeIds)->limit(10)->get();
+
+        return response()->json([
+            'sent_requests' => $sent,
+            'received_requests' => $received,
+            'accepted_friends' => $accepted,
+            'suggestions' => $autoSuggestions
+        ]);
     }
+
 
     /**
      * @OA\Post(
@@ -82,12 +112,20 @@ class FriendController extends Controller
     public function update(Request $request, FriendSuggestion $friendSuggestion)
     {
         $this->authorize('update', $friendSuggestion);
+
         $data = $request->validate([
-            'status' => 'required|in:pending,accepted,rejected,suggested'
+            'status' => 'required|in:pending,accepted,rejected'
         ]);
+
+        // Only receiver can accept/reject
+        if ($friendSuggestion->suggested_friend_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
         $friendSuggestion->update($data);
-        return response()->json($friendSuggestion);
+        return response()->json(['message' => 'Status updated', 'data' => $friendSuggestion]);
     }
+
 
     /**
      * @OA\Delete(

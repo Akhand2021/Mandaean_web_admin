@@ -102,7 +102,7 @@ class StoryController extends Controller
 
             return response()->json([
                 'message' => 'Story created successfully',
-                'story' => $story
+                'story' => new StoryResource($story)
             ], 201);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to upload file: ' . $e->getMessage()], 500);

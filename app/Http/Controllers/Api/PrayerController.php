@@ -59,7 +59,8 @@ class PrayerController extends Controller
             'ar_title',
             'ar_subtitle',
             'ar_description',
-            'pe_other_info'
+            'pe_other_info',
+            'docs'
         )
             ->orderBy('prayer_date', 'desc')
             ->orderBy('created_at', 'desc')

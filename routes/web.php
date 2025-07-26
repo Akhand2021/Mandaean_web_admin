@@ -30,6 +30,8 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\AudioController;
 use App\Http\Controllers\TermsAndConditionsController;
+use App\Http\Controllers\Admin\FaqController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -141,7 +143,9 @@ Route::group(['middleware' => ['checklogin', 'preventBackHistory']], function ()
     ]);
 
 
-    Route::Resource('terms-and-conditions', TermsAndConditionsController::class);
+    Route::resource('terms-and-conditions', TermsAndConditionsController::class);
+    // FAQ Routes
+    Route::resource('faqs', FaqController::class);
 });
 
 Route::controller(PaymentController::class)

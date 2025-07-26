@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\AudioController;
 use App\Http\Controllers\Api\ReligiousOccasionController;
 use App\Http\Controllers\TermsAndConditionsController;
 use App\Http\Controllers\Api\StoryController;
+use App\Http\Controllers\Api\FaqController;
 
 /*
 |--------------------------------------------------------------------------
@@ -163,12 +164,15 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::get('prayers', [App\Http\Controllers\Api\PrayerController::class, 'index']);
         Route::get('religious-occasions', [ReligiousOccasionController::class, 'index']);
         Route::get('religious-occasions/{id}', [ReligiousOccasionController::class, 'show']);
-        Route::get('/stories', [StoryController::class, 'index']); // Get stories feed
-        Route::post('/stories', [StoryController::class, 'store']); // Create story
-        Route::get('/stories/{story}', [StoryController::class, 'show']); // View story (marks as viewed)
-        Route::delete('/stories/{story}', [StoryController::class, 'destroy']); // Delete story
-        Route::get('/stories/{story}/viewers', [StoryController::class, 'viewers']); // Get story viewers
-        // /api/my-stories
-        Route::get('/my-stories', [StoryController::class, 'myStories']); // Get user's own stories
+        Route::get('/stories', [StoryController::class, 'index']);
+        Route::post('/stories', [StoryController::class, 'store']);
+        Route::get('/stories/{story}', [StoryController::class, 'show']);
+        Route::delete('/stories/{story}', [StoryController::class, 'destroy']);
+        Route::get('/stories/{story}/viewers', [StoryController::class, 'viewers']);
+        Route::get('/my-stories', [StoryController::class, 'myStories']);
+
+
+        // FAQ Routes
+        Route::apiResource('faqs', FaqController::class);
     });
 });

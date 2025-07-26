@@ -365,6 +365,12 @@
                             <i class="mdi mdi-file-document-box menu-icon"></i>
                         </a>
                     </li>
+                    <li class="nav-item {{ \Request::segment(1) == 'faq' ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ url('faqs') }}">
+                            <span class="menu-title">Faq</span>
+                            <i class="mdi mdi-file-document-box menu-icon"></i>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <div class="main-panel">

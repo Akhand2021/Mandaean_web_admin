@@ -32,6 +32,12 @@ class PrayerController extends Controller
                 ->editColumn('subtitle', function ($row) {
                     return substr($row->subtitle, 0, 80) . '...';
                 })
+                ->addColumn('docs', function ($row) {
+                    return $row->docs ? "<audio controls><source src='" . url('/') . '/' . $row->docs . "' type='audio/mpeg'>Your browser does not support the audio element.</audio>" : 'N/A';
+                })
+                ->addColumn('srt_file', function ($row) {
+                    return $row->srt_file ? "<a href='" . url('/') . '/' . $row->srt_file . "' target='_blank'>View</a>" : 'N/A';
+                })
                 ->addColumn('action', function ($row) {
                     $editimg = asset('/') . 'public/assets/images/edit-round-line.png';
                     $btn = '<a href="' . route('prayer.edit', $row->id) . '" title="Edit"><label class="badge badge-gradient-dark">Edit</label></a> ';
@@ -39,7 +45,7 @@ class PrayerController extends Controller
                     $btn .= '<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" class="deldata" id="' . $row->id . '" title="Delete" onclick=\'setData(' . $row->id . ',"' . route('prayer.destroy', $row->id) . '");\'><label class="badge badge-danger">Delete</label></a>';
                     return $btn;
                 })
-                ->rawColumns(['subtitle', 'action'])
+                ->rawColumns(['docs', 'srt_file', 'subtitle', 'action'])
                 ->make(true);
         }
 
@@ -109,13 +115,16 @@ class PrayerController extends Controller
             $prayer['pe_subtitle'] = $request->pe_subtitle;
             $prayer['pe_description'] = $request->pe_description;
             // $prayer['pe_other_info'] = $request->pe_other_info;
+
+            if ($request->hasFile('srt_file')) {
+                $file = $request->file('srt_file');
+                $filePath = upload_file_common($file, 'uploads/srt_files/');
+                $prayer['srt_file'] = $filePath;
+            }
             if ($request->hasFile('docs')) {
-                $destinationPath = 'uploads/';
                 $file = $request->file('docs');
-                $file_name = time() . '' . $file->getClientOriginalName();
-                $file->move($destinationPath, $file_name);
-                $imageName = $destinationPath . '' . $file_name;
-                $prayer['docs'] = $imageName;
+                $filePath = upload_file_common($file, 'uploads/audio/');
+                $prayer['docs'] = $filePath;
             }
             $prayer->save();
             return redirect('prayer')->with('message', 'Record Added!');
@@ -194,18 +203,24 @@ class PrayerController extends Controller
             $prayer['pe_subtitle'] = $request->pe_subtitle;
             $prayer['pe_description'] = $request->pe_description;
             // $prayer['pe_other_info'] = $request->pe_other_info;
+
+            if ($request->hasFile('srt_file')) {
+                $file = $request->file('srt_file');
+                $filePath = upload_file_common($file, 'uploads/srt_files/');
+                $prayer['srt_file'] = $filePath;
+            }
             if ($request->hasFile('docs')) {
-                $destinationPath = 'uploads/';
                 $file = $request->file('docs');
-                $file_name = time() . '' . $file->getClientOriginalName();
-                $file->move($destinationPath, $file_name);
-                $imageName = $destinationPath . '' . $file_name;
-                $prayer['docs'] = $imageName;
+                $filePath = upload_file_common($file, 'uploads/audio/');
+                $prayer['docs'] = $filePath;
             }
             $prayer->save();
             return redirect('prayer')->with('message', 'Record Updated!');
         }
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.

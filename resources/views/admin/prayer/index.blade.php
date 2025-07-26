@@ -26,6 +26,8 @@
                                     <th> Title </th>
                                     <th> Subtitle </th>
                                     <th>Prayer Type</th>
+                                    <th> Audio </th>
+                                    <th> SRT File </th>
                                     <th> Prayer Time </th>
                                     <th> Action </th>
                                 </tr>
@@ -87,6 +89,15 @@
                 {
                     data: 'prayer_type',
                     name: 'prayer_type'
+                },
+                {
+                    data: 'docs',
+                    name: 'docs',
+                    width: '30%'
+                },
+                {
+                    data: 'srt_file',
+                    name: 'srt_file'
                 },
                 {
                     data: 'prayer_time',

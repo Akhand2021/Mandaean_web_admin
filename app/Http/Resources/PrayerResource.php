@@ -21,6 +21,7 @@ class PrayerResource extends JsonResource
                 'subtitle' => $this->ar_subtitle,
                 'description' => strip_tags($this->ar_description),
                 'url'      => ($this->docs) ? url('/') . '/' . $this->docs : null,
+                'srt_file' => ($this->srt_file) ? url('/') . '/' . $this->srt_file : null,
             ];
         } elseif ($request->lang == 'pe') {
             return [
@@ -29,6 +30,7 @@ class PrayerResource extends JsonResource
                 'subtitle' => $this->pe_subtitle,
                 'description' => strip_tags($this->pe_description),
                 'url'      => ($this->docs) ? url('/') . '/' . $this->docs : null,
+                'srt_file' => ($this->srt_file) ? url('/') . '/' . $this->srt_file : null,
             ];
         } else {
             return [
@@ -37,6 +39,7 @@ class PrayerResource extends JsonResource
                 'subtitle' => $this->subtitle,
                 'description' => strip_tags($this->description),
                 'url'      => ($this->docs) ? url('/') . '/' . $this->docs : null,
+                'srt_file' => ($this->srt_file) ? url('/') . '/' . $this->srt_file : null,
             ];
         }
     }

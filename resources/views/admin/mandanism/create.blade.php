@@ -161,7 +161,8 @@
 
     <script type="text/javascript">
         $('#description,#ar_description,#pe_description').summernote({
-            height: 300
+            height: 300,
+            shortcuts: false
         });
     </script>
 @endsection

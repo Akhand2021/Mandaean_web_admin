@@ -51,6 +51,28 @@
                                 </div>
                             @endif
                         </div>
+                        <div class="row">
+                            <div class="form-group col-sm-8">
+                                <label>SRT File</label>
+                                <input type="file" name="srt_file" class="file-upload-default">
+                                <div class="input-group col-xs-12">
+                                    <input type="text" class="form-control file-upload-info" disabled
+                                        placeholder="Upload SRT File">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-gradient-primary"
+                                            type="button">Upload</button>
+                                    </span>
+                                </div>
+                                @error('srt_file')
+                                    <p style="color: red">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            @if ($data['prayer']->srt_file)
+                                <div class="form-group col-sm-4">
+                                    <a href="{{ url('/') }}/{{ $data['prayer']->srt_file }}" target="_blank">View SRT File</a>
+                                </div>
+                            @endif
+                        </div>
                         <div class="form-group col-sm-12">
                             <label for="exampleInputName1">Title</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Title"

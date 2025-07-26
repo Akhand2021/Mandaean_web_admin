@@ -25,6 +25,7 @@
                                 <tr>
                                     <th> Question </th>
                                     <th> Answer </th>
+                                    <th> Status </th>
                                     <th> Action </th>
                                 </tr>
                             </thead>
@@ -81,6 +82,10 @@
                 {
                     data: 'answer',
                     name: 'answer'
+                },
+                {
+                    data: 'is_active',
+                    name: 'is_active'
                 },
                 {
                     data: 'action',

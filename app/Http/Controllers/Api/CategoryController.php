@@ -47,7 +47,7 @@ class CategoryController extends Controller
      */
     public function MandanismList(Request $request)
     {
-        $data = Mandanism::where(['category' => 'our_history', 'status' => 'active'])->get();
+        $data = Mandanism::where(['status' => 'active'])->get();
 
         return response([
             'status' => true,

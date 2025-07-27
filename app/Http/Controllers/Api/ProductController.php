@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Auth;
 
 class ProductController extends Controller
 {
@@ -82,7 +83,7 @@ class ProductController extends Controller
      *     description="Get Product Detail", 
      *     summary="Product Detail",
      *     operationId="productDetail",  
-     *     security={{"apiKey":{}}, {"bearer_token":{}}},
+     *     security={{"apiKey":{}}, {"bearerAuth":{}}},
      *      @OA\Parameter(
      *         name="id",
      *         in="path", 
@@ -102,6 +103,8 @@ class ProductController extends Controller
      *        @OA\Property(property="name", type="string", example="Product Name"),
      *        @OA\Property(property="price", type="number", format="float", example=99.99),
      *        @OA\Property(property="description", type="string", example="Product description here."),
+     *        @OA\Property(property="is_in_cart", type="boolean", example=false),
+     *        @OA\Property(property="cart_quantity", type="integer", example=0),
      *      )
      * )
      *    
@@ -110,10 +113,33 @@ class ProductController extends Controller
      */
     public function ProductDetail(Request $request, $id)
     {
+        $user =  Auth::id();
+
         $data = Product::with(['images', 'colors', 'sizes', 'brands'])->where('status', 'active')->find($id);
+        if (!$data) {
+            return response([
+                'status' => false,
+                'message' => 'Product not found.',
+            ], 404);
+        }
         foreach ($data->images as $k => $val) {
             $val->image = url('/') . '/' . $val->image;
         }
+        $is_in_cart = false;
+        $cart_quantity = 0;
+        if ($user) {
+            $cart = \App\Models\Cart::where('user_id', $user)->where('status', 'active')->first();
+
+            if ($cart) {
+                $cart_detail = $cart->detail()->where('product_id', $id)->first();
+                if ($cart_detail) {
+                    $is_in_cart = true;
+                    $cart_quantity = $cart_detail->qty;
+                }
+            }
+        }
+        $data->is_in_cart = $is_in_cart;
+        $data->cart_quantity = $cart_quantity;
         return response([
             'status' => true,
             'message' => 'Product Detail.',

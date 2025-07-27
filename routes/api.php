@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\ReligiousOccasionController;
 use App\Http\Controllers\TermsAndConditionsController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\FaqController;
+use App\Http\Controllers\Api\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,8 +69,7 @@ Route::group(['middleware' => ['apiKey']], function () {
     Route::get('prayer-list', [CategoryController::class, 'PrayerList']);
     Route::get('prayer-detail/{id}', [CategoryController::class, 'PrayerDetail']);
 
-    Route::get('product-list', [ProductController::class, 'ProductList']);
-    Route::get('product-detail/{id}', [ProductController::class, 'ProductDetail']);
+
 
     Route::get('program-list', [CategoryController::class, 'ProgramList']);
     Route::get('program-detail/{id}', [CategoryController::class, 'ProgramDetail']);
@@ -97,12 +97,14 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::delete('delete-account', [UserController::class, 'deleteAccount']);
 
         Route::post('bookmark', [CategoryController::class, 'Bookmark']);
+        Route::get('product-list', [ProductController::class, 'ProductList']);
+        Route::get('product-detail/{id}', [ProductController::class, 'ProductDetail']);
 
         Route::post('add-to-cart', [CartController::class, 'addToCart']);
         Route::get('get-cart', [CartController::class, 'getCart']);
         Route::post('update-item', [CartController::class, 'updateItem']);
         Route::post('delete-item', [CartController::class, 'deleteItem']);
-        Route::post('user-address', [CartController::class, 'userAddress']);
+        
         Route::get('order-history', [OrderController::class, 'orderHistory']);
         Route::get('order-detail/{id}', [OrderController::class, 'orderDetail']);
 
@@ -174,5 +176,8 @@ Route::group(['middleware' => ['apiKey']], function () {
 
         // FAQ Routes
         Route::apiResource('faqs', FaqController::class);
+
+        // Address Routes
+        Route::apiResource('addresses', AddressController::class);
     });
 });

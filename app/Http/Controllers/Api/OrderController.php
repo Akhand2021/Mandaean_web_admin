@@ -196,6 +196,10 @@ class OrderController extends Controller
                 'data' => []
             ], 422);
         }
+
+        $cart->address_id = $request->address_id;
+        $cart->save();
+
         $order = Order::create([
             'order_number' => uniqid('ORD'),
             'transaction_id' => $request->transaction_id ?? null,
@@ -214,6 +218,10 @@ class OrderController extends Controller
                 'size' => $item->size,
                 'color' => $item->color,
             ]);
+
+            $product = \App\Models\Product::find($item->product_id);
+            $product->inventory -= $item->qty;
+            $product->save();
         }
         $cart->status = 'inactive';
         $cart->save();

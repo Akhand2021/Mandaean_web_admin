@@ -19,7 +19,7 @@ class ProductController extends Controller
      *     tags={"Product"},
      *     summary="Product List",  
      *     description="Get a list of products with optional search and filter",
-     *    security={{"apiKey":{}}, {"bearer_token":{}}},
+     *    security={{"apiKey":{}}, {"bearerAuth":{}}},
      *    @OA\Parameter(
      *        name="search",
      *       in="query",

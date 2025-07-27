@@ -197,8 +197,9 @@ class CartController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"item_id","type"},
-     *             @OA\Property(property="item_id", type="integer", example=1),
+     *             required={"product_id","cart_id","type"},
+     *             @OA\Property(property="product_id", type="integer", example=1),
+     *             @OA\Property(property="cart_id", type="integer", example=1),
      *             @OA\Property(property="type", type="string", example="add", description="add or remove")
      *         )
      *     ),
@@ -220,7 +221,8 @@ class CartController extends Controller
     public function updateItem(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'item_id' => 'required',
+            'product_id' => 'required',
+            'cart_id' => 'required',
             'type' => 'required'
         ]);
         if ($validator->fails()) {
@@ -233,7 +235,7 @@ class CartController extends Controller
         }
 
         $id = Auth::id();
-        $cartDetail = CartDetail::find($request->item_id);
+        $cartDetail = CartDetail::where(['cart_id' => $request->cart_id, 'product_id' => $request->product_id])->first();
         if ($request->type == 'add') {
             $qty = $cartDetail->qty + 1;
             $product = Product::find($cartDetail->product_id);
@@ -245,17 +247,17 @@ class CartController extends Controller
                     'data' => []
                 ], 422);
             }
-            CartDetail::where('id', $request->item_id)->update(['qty' => $qty]);
+            CartDetail::where('id', $cartDetail->id)->update(['qty' => $qty]);
         } else {
             if ($cartDetail->qty == 1) {
-                CartDetail::where('id', $request->item_id)->delete();
+                CartDetail::where('id', $cartDetail->id)->delete();
             } else {
                 $qty = $cartDetail->qty - 1;
-                CartDetail::where('id', $request->item_id)->update(['qty' => $qty]);
+                CartDetail::where('id', $cartDetail->id)->update(['qty' => $qty]);
             }
         }
 
-        $detail = CartDetail::find($request->item_id);
+        $detail = CartDetail::find($cartDetail->id);
 
         $amount = 0;
         $items = CartDetail::where('cart_id', $detail->cart_id)->get();

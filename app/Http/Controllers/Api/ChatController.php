@@ -83,6 +83,8 @@ class ChatController extends Controller
         }
 
         $message = Message::create($data);
+
+        $message->attachment = $message->attachment ? url('/') . '/storage/' . $message->attachment : null;
         broadcast(new MessageSent($message))->toOthers();
         return response()->json($message);
     }
@@ -140,6 +142,12 @@ class ChatController extends Controller
         })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
+        $messages->getCollection()->transform(function ($message) {
+            if ($message->attachment) {
+                $message->attachment = url('/') . '/storage/' . $message->attachment;
+            }
+            return $message;
+        });
 
         return response()->json($messages);
     }

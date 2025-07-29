@@ -97,12 +97,12 @@ class CategoryController extends Controller
      */
     public function MandanismDetail($id)
     {
-        $data = Mandanism::find($id);
+        $data = Mandanism::where(['id' => $id])->get();
         // print_r($data->get());
         return response([
             'status' => true,
             'message' => 'Mandanism Detail.',
-            'data' =>  MandanismResource::collection($data->get())
+            'data' =>  MandanismResource::collection($data)
         ], 201);
     }
 

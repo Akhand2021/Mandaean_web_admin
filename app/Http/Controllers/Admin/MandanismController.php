@@ -34,8 +34,8 @@ class MandanismController extends Controller
                 ->editColumn('description', function ($row) {
                     return $row->description;
                 })
-                ->editColumn('category', function ($row) {
-                    return ucfirst(str_replace("_", ' ', $row->category));
+                ->editColumn('image', function ($row) {
+                    return '<img src="' . url("/") . "/" . $row->image . '" height="100px;" width="100px;">';
                 })
                 ->addColumn('action', function ($row) {
                     $editimg = asset('/') . 'public/assets/images/edit-round-line.png';
@@ -44,7 +44,7 @@ class MandanismController extends Controller
                     $btn .= '<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" class="deldata" id="' . $row->id . '" title="Delete" onclick=\'setData(' . $row->id . ',"' . route('mandanism.destroy', $row->id) . '");\'><label class="badge badge-danger">Delete</label></a>';
                     return $btn;
                 })
-                ->rawColumns(['description', 'action'])
+                ->rawColumns(['image', 'description', 'action'])
                 ->make(true);
         }
 
@@ -69,7 +69,7 @@ class MandanismController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'nullable|max:200',
             // 'group' => 'required',
-            // 'description' => 'required',
+            'description' => 'required',
             // 'image' => 'required',
             // 'date' => 'required',
             // 'ar_title' => 'required|max:200',
@@ -143,7 +143,7 @@ class MandanismController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'nullable|max:200',
             // 'group' => 'required',
-            // 'description' => 'required',
+            'description' => 'required',
             // 'date' => 'required',
             // 'ar_title' => 'required|max:200',
             // 'ar_group' => 'required',

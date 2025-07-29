@@ -23,20 +23,22 @@
                         enctype='multipart/form-data'>
                         @csrf
                         <h4 align="center">English Language</h4><br />
-                        {{-- <div class="form-group col-sm-12">
-                        <label>Banner Image</label>
-                        <input type="file" name="image" class="file-upload-default">
-                        <div class="input-group col-xs-12">
-                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                            <span class="input-group-append">
-                                <button class="file-upload-browse btn btn-gradient-primary" type="button">Upload</button>
-                            </span>
+                        <div class="form-group col-sm-12">
+                            <label>Banner Image</label>
+                            <input type="file" name="image" class="file-upload-default">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control file-upload-info" disabled
+                                    placeholder="Upload Image">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-gradient-primary"
+                                        type="button">Upload</button>
+                                </span>
+                            </div>
+                            @error('image')
+                                <p style="color: red">{{ $message }}</p>
+                            @enderror
                         </div>
-                        @error('image')
-                            <p style="color: red">{{$message}}</p>
-                        @enderror
-                    </div>
-                    <div class="form-group col-sm-12">
+                        {{--  <div class="form-group col-sm-12">
                         <label>PDF/Video</label>
                         <input type="file" name="docs" class="file-upload-default">
                         <div class="input-group col-xs-12">

@@ -23,6 +23,7 @@
                         <table class="table table-striped" id="mandanism-table">
                             <thead>
                                 <tr>
+                                    <th> Image </th>
                                     <th> Title </th>
                                     <th> Description </th>
                                     <th> Action </th>
@@ -75,6 +76,10 @@
                 }
             },
             columns: [{
+                    data: 'image',
+                    name: 'image',
+                },
+                {
                     data: 'title',
                     name: 'title'
                 },

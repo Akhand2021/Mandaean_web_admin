@@ -16,17 +16,14 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => new UserResource($this->whenLoaded('user')),
             'content' => $this->content,
-            'image_url' => $this->image_url ? asset($this->image_url) : null,
-            'likes_count' => $this->likes->count(),
-            'comments_count' => $this->comments->count(),
-            'shares_count' => $this->shares->count(),
+            'image_url' => $this->image_url ? url($this->image_url) : null,
+            'user' => new UserResource($this->whenLoaded('user')),
+            'likes_count' => $this->whenCounted('likes'),
+            'comments_count' => $this->whenCounted('comments'),
+            'shares_count' => $this->whenCounted('shares'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'likes' => LikeResource::collection($this->whenLoaded('likes')),
-            'comments' => CommentResource::collection($this->whenLoaded('comments')),
-            'shares' => ShareResource::collection($this->whenLoaded('shares')),
         ];
     }
 }

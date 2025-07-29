@@ -20,6 +20,9 @@ use App\Http\Controllers\Api\InquiryController;
 use App\Http\Controllers\Api\StaticContentController;
 use App\Http\Controllers\Api\MelvasheController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\LikeController;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\ShareController;
 use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\AudioController;
 use App\Http\Controllers\Api\ReligiousOccasionController;
@@ -104,7 +107,7 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::get('get-cart', [CartController::class, 'getCart']);
         Route::post('update-item', [CartController::class, 'updateItem']);
         Route::post('delete-item', [CartController::class, 'deleteItem']);
-        
+
         Route::get('order-history', [OrderController::class, 'orderHistory']);
         Route::get('order-detail/{id}', [OrderController::class, 'orderDetail']);
 
@@ -156,9 +159,14 @@ Route::group(['middleware' => ['apiKey']], function () {
         Route::apiResource('melvashe', MelvasheController::class);
 
         Route::apiResource('posts', PostController::class);
-        Route::post('posts/{post}/like', [PostController::class, 'like']);
-        Route::post('posts/{post}/comment', [PostController::class, 'comment']);
-        Route::post('posts/{post}/share', [PostController::class, 'share']);
+        Route::post('posts/{post}/like', [LikeController::class, 'like']);
+        Route::get('posts/{post}/likes', [LikeController::class, 'getLikes']);
+        Route::post('posts/{post}/comment', [CommentController::class, 'comment']);
+        Route::get('posts/{post}/comments', [CommentController::class, 'getComments']);
+        Route::put('comments/{comment}', [CommentController::class, 'update']);
+        Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
+        Route::post('posts/{post}/share', [ShareController::class, 'share']);
+        Route::get('posts/{post}/shares', [ShareController::class, 'getShares']);
         Route::apiResource('friends', FriendController::class)->except(['show']);
         Route::get('my-posts', [PostController::class, 'myPosts']);
         Route::get('audios', [AudioController::class, 'index']);

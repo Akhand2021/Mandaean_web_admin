@@ -28,6 +28,15 @@ class Handler extends ExceptionHandler
         });
     }
 
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException && $request->expectsJson()) {
+            return response()->json(['message' => 'This action is unauthorized.'], 403);
+        }
+
+        return parent::render($request, $exception);
+    }
+
     protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
     {
         if ($request->expectsJson()) {

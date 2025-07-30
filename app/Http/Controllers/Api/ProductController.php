@@ -50,7 +50,7 @@ class ProductController extends Controller
     {
         $search = $request->search;
         $filter = $request->filter;
-        $data = Product::with(['images', 'colors', 'sizes', 'brands'])
+        $data = Product::with(['images', 'sizes'])
             ->where('status', 'active');
         if ($search) {
             $data = $data->where('name', 'LIKE', '%' . $search . '%')
@@ -115,7 +115,7 @@ class ProductController extends Controller
     {
         $user =  Auth::id();
 
-        $data = Product::with(['images', 'colors', 'sizes', 'brands'])->where('status', 'active')->find($id);
+        $data = Product::with(['images', 'sizes'])->where('status', 'active')->find($id);
         if (!$data) {
             return response([
                 'status' => false,

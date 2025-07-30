@@ -58,13 +58,6 @@
                             <p style="color: red">{{$message}}</p>
                         @enderror
                     </div>
-                    <div class="form-group col-sm-12">
-                        <label for="exampleInputEmail3">Category</label>
-                        <input class="form-control" id="category" name="category" placeholder="Category" value="{{old('category',$data['product']->category)}}">
-                        @error('category')
-                            <p style="color: red">{{$message}}</p>
-                        @enderror
-                    </div>
                     <div class="row">
                         <div class="form-group col-sm-6">
                             <label for="exampleInputEmail3">Inventory</label>
@@ -74,33 +67,12 @@
                             @enderror
                         </div>
                         <div class="form-group col-sm-6">
-                            <label for="exampleSelectBrand">Brand</label>
-                            <select class="form-select" id="brand" name="brand">
-                                @foreach($data['brands'] as $brand)
-                                    <option value="{{$brand->id}}">{{$brand->name}}</option>
-                                @endforeach
-                            </select>
-                            @error('brand')
+                            <label for="exampleInputEmail3">Price</label>
+                            <input type="number" class="form-control" id="price" name="price" placeholder="Price" value="{{old('price',$data['product']->price)}}">
+                            @error('price')
                                 <p style="color: red">{{$message}}</p>
                             @enderror
                         </div>
-                    </div>
-                    <div class="form-group col-sm-12">
-                        <label for="exampleInputEmail3">Color</label>
-                        <div class="row">
-                            @foreach($data['colors'] as $color)
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="color[]" value="{{$color->id}}" {{(in_array($color->id,($data['product']->color_ids ?? [])))?"checked":""}}> {{$color->name}} 
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        @error('color')
-                            <p style="color: red">{{$message}}</p>
-                        @enderror
                     </div>
                     <div class="form-group col-sm-12">
                         <label for="exampleInputEmail3">Size</label>
@@ -131,13 +103,6 @@
                             <p style="color: red">{{$message}}</p>
                         @enderror
                     </div>
-                    <div class="form-group col-sm-12">
-                        <label for="exampleInputEmail3">Material</label>
-                        <input class="form-control" id="material" name="material" placeholder="Material" value="{{old('material',$data['product']->material)}}">
-                        @error('material')
-                            <p style="color: red">{{$message}}</p>
-                        @enderror
-                    </div>
                     <h4 align="center">Arabic Language</h4><br/>
                     <div class="form-group col-sm-12">
                         <label for="exampleInputName1">Name</label>
@@ -160,13 +125,6 @@
                             <p style="color: red">{{$message}}</p>
                         @enderror
                     </div>
-                    <div class="form-group col-sm-12">
-                        <label for="exampleInputEmail3">Material</label>
-                        <input class="form-control" id="ar_material" name="ar_material" placeholder="Material" value="{{old('ar_material',$data['product']->ar_material)}}">
-                        @error('ar_material')
-                            <p style="color: red">{{$message}}</p>
-                        @enderror
-                    </div>
                     <h4 align="center">Persian Language</h4><br/>
                     <div class="form-group col-sm-12">
                         <label for="exampleInputName1">Name</label>
@@ -186,13 +144,6 @@
                         <label for="exampleInputEmail3">Category</label>
                         <input class="form-control" id="pe_category" name="pe_category" placeholder="Category" value="{{old('pe_category',$data['product']->pe_category)}}">
                         @error('pe_category')
-                            <p style="color: red">{{$message}}</p>
-                        @enderror
-                    </div>
-                    <div class="form-group col-sm-12">
-                        <label for="exampleInputEmail3">Material</label>
-                        <input class="form-control" id="pe_material" name="pe_material" placeholder="Material" value="{{old('pe_material',$data['product']->pe_material)}}">
-                        @error('pe_material')
                             <p style="color: red">{{$message}}</p>
                         @enderror
                     </div>

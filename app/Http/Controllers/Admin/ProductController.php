@@ -65,8 +65,6 @@ class ProductController extends Controller
     {
         $adminuser = session()->get('adminuser');
         $data['sort_name'] = $adminuser->name;
-        $data['brands'] = Brand::where('status', 'active')->get();
-        $data['colors'] = Color::where('status', 'active')->get();
         $data['sizes'] = Size::where('status', 'active')->get();
         return view('admin.product.create', ['data' => $data]);
     }
@@ -78,31 +76,24 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
-            'category' => 'required',
             'inventory' => 'required',
-            'brand' => 'required',
-            'color' => 'required',
+            'price' => 'required|numeric',
             'size' => 'required',
             'sizeprice' => 'required',
-            'material' => 'required',
             // 'condition' => 'required',
             // 'ar_name' => 'required|max:200',
             // 'ar_category' => 'required',
-            // 'ar_material' => 'required',
             // 'ar_condition' => 'required',
             // 'pe_name' => 'required|max:200',
             // 'pe_category' => 'required',
-            // 'pe_material' => 'required',
             // 'pe_condition' => 'required',
             'photo' => 'required',
         ], [
             'ar_name.required' => 'The name field is required.',
             'ar_category.required' => 'The category field is required.',
-            'ar_material.required' => 'The material field is required.',
             'ar_condition.required' => 'The condition field is required.',
             'pe_name.required' => 'The name field is required.',
             'pe_category.required' => 'The category field is required.',
-            'pe_material.required' => 'The material field is required.',
             'pe_condition.required' => 'The condition field is required.',
         ]);
 
@@ -119,23 +110,17 @@ class ProductController extends Controller
 
             $product = new Product();
             $product['name'] = $request->name;
-            $product['category'] = $request->category;
             $product['sku'] = _getSKU();
-            $product['price'] = $request->price ?? $sizeprice[0];
+            $product['price'] = $request->price;
             $product['inventory'] = $request->inventory;
-            $product['color_ids'] = array_map('intval', $request->color);
             $product['size_ids'] = array_map('intval', $request->size);
             $product['sizeprice'] = $sizeprice;
-            $product['brand_id'] = $request->brand;
-            $product['material'] = $request->material;
             $product['condition'] = $request->condition;
             // $product['ar_name'] = $request->ar_name;
             // $product['ar_category'] = $request->ar_category;
-            // $product['ar_material'] = $request->ar_material;
             // $product['ar_condition'] = $request->ar_condition;
             // $product['pe_name'] = $request->pe_name;
             // $product['pe_category'] = $request->pe_category;
-            // $product['pe_material'] = $request->pe_material;
             // $product['pe_condition'] = $request->pe_condition;
             $product->save();
 
@@ -164,8 +149,6 @@ class ProductController extends Controller
     {
         $adminuser = session()->get('adminuser');
         $data['sort_name'] = $adminuser->name;
-        $data['brands'] = Brand::where('status', 'active')->get();
-        $data['colors'] = Color::where('status', 'active')->get();
         $data['sizes'] = Size::where('status', 'active')->get();
         $data['product'] = Product::with('images')->find($id);
         return view('admin.product.edit', ['data' => $data]);
@@ -178,31 +161,24 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
-            'category' => 'required',
             'inventory' => 'required',
-            'brand' => 'required',
-            'color' => 'required',
+            'price' => 'required|numeric',
             'size' => 'required',
             'sizeprice' => 'required',
-            'material' => 'required',
             // 'condition' => 'required',
             // 'ar_name' => 'required|max:200',
             // 'ar_category' => 'required',
-            // 'ar_material' => 'required',
             // 'ar_condition' => 'required',
             // 'pe_name' => 'required|max:200',
             // 'pe_category' => 'required',
-            // 'pe_material' => 'required',
             // 'pe_condition' => 'required',
             // 'photo' => 'required',
         ], [
             'ar_name.required' => 'The name field is required.',
             'ar_category.required' => 'The category field is required.',
-            'ar_material.required' => 'The material field is required.',
             'ar_condition.required' => 'The condition field is required.',
             'pe_name.required' => 'The name field is required.',
             'pe_category.required' => 'The category field is required.',
-            'pe_material.required' => 'The material field is required.',
             'pe_condition.required' => 'The condition field is required.',
         ]);
 
@@ -219,22 +195,16 @@ class ProductController extends Controller
 
             $product = Product::find($id);
             $product['name'] = $request->name;
-            $product['category'] = $request->category;
-            $product['price'] = $request->price ?? $sizeprice[0];
+            $product['price'] = $request->price;
             $product['inventory'] = $request->inventory;
-            $product['color_ids'] = array_map('intval', $request->color);
             $product['size_ids'] = array_map('intval', $request->size);
             $product['sizeprice'] = $sizeprice;
-            $product['brand_id'] = $request->brand;
-            $product['material'] = $request->material;
             $product['condition'] = $request->condition;
             // $product['ar_name'] = $request->ar_name;
             // $product['ar_category'] = $request->ar_category;
-            // $product['ar_material'] = $request->ar_material;
             // $product['ar_condition'] = $request->ar_condition;
             // $product['pe_name'] = $request->pe_name;
             // $product['pe_category'] = $request->pe_category;
-            // $product['pe_material'] = $request->pe_material;
             // $product['pe_condition'] = $request->pe_condition;
             $product->save();
 

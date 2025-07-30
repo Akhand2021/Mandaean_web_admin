@@ -31,7 +31,6 @@
                   <th> <input type="checkbox" id="select-all"> </th>
                   <th> Image  </th>
                   <th> Name </th>
-                  <th> Category </th>
                   <th> SKU </th>
                   <th> Price </th>
                   <th> Action </th>
@@ -85,7 +84,6 @@
             {data: 'checkbox', name: 'checkbox', orderable:false, searchable:false},
             {data: 'image', name: 'image'},
             {data: 'name', name: 'name'},
-            {data: 'category', name: 'category'},
             {data: 'sku', name: 'sku'},
             {data: 'price', name: 'price'},
             {data: 'action', name: 'action', orderable:false, searchable:false}

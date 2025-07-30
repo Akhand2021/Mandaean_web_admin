@@ -9,6 +9,11 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
+            <a href="javascript:void(0)" id="delete-selected" title="Delete Selected">
+              <label class="badge badge-danger">Delete Selected</label>
+            </a>
+          </li>
+          <li class="breadcrumb-item">
             <a href="{{url('product/create')}}" title="Add">
               <label class="badge badge-info">+ Add</label>
             </a>
@@ -23,6 +28,7 @@
             <table class="table table-striped" id="product-table">
               <thead>
                 <tr>
+                  <th> <input type="checkbox" id="select-all"> </th>
                   <th> Image  </th>
                   <th> Name </th>
                   <th> Category </th>
@@ -76,6 +82,7 @@
             }
         },
         columns: [
+            {data: 'checkbox', name: 'checkbox', orderable:false, searchable:false},
             {data: 'image', name: 'image'},
             {data: 'name', name: 'name'},
             {data: 'category', name: 'category'},
@@ -83,20 +90,55 @@
             {data: 'price', name: 'price'},
             {data: 'action', name: 'action', orderable:false, searchable:false}
         ],
-        // columnDefs: [
-        //     {
-        //         "targets":[1],
-        //         "render": function(data) {
-        //             return data[0].toUpperCase() + data.slice(1);
-        //         }
-        //     }
-        // ],
     });
     $('.dataTables_filter').hide();
     
     $('#reset').on('click', function(e) {
         oTable.draw();
         e.preventDefault();
+    });
+
+    $('#select-all').on('click', function(){
+        var rows = oTable.rows({ 'search': 'applied' }).nodes();
+        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+
+    $('#product-table tbody').on('change', 'input[type="checkbox"]', function(){
+        if(!this.checked){
+            var el = $('#select-all').get(0);
+            if(el && el.checked && ('indeterminate' in el)){
+                el.indeterminate = true;
+            }
+        }
+    });
+
+    $('#delete-selected').on('click', function(e) {
+        var ids = [];
+        $('.product-checkbox:checked').each(function() {
+            ids.push($(this).val());
+        });
+
+        if (ids.length > 0) {
+            if (confirm('Are you sure you want to delete the selected products?')) {
+                var token = $("meta[name='csrf-token']").attr("content");
+                $.ajax({
+                    url: "{{ route('product.massdestroy') }}",
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        ids: ids
+                    },
+                    success: function (response){
+                        oTable.draw();
+                    },
+                    error: function (xhr) {
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            }
+        } else {
+            alert('Please select at least one product to delete.');
+        }
     });
 
     function setData(id, url){

@@ -34,6 +34,9 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
             return DataTables::of($dataList)
+                ->addColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" class="product-checkbox" value="' . $row->id . '">';
+                })
                 ->editColumn('image', function ($row) {
                     if (count($row->images) > 0) {
                         return '<img src="' . url('/') . '/' . $row->images[0]->image . '">';
@@ -48,7 +51,7 @@ class ProductController extends Controller
                     $btn .= '<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" class="deldata" id="' . $row->id . '" title="Delete" onclick=\'setData(' . $row->id . ',"' . route('product.destroy', $row->id) . '");\'><label class="badge badge-danger">Delete</label></a>';
                     return $btn;
                 })
-                ->rawColumns(['image', 'action'])
+                ->rawColumns(['checkbox', 'image', 'action'])
                 ->make(true);
         }
 
@@ -250,10 +253,39 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Product::where('id', $id)->delete();
+        $product = Product::findOrFail($id);
+        $images = ProductImage::where('product_id', $id)->get();
+        foreach ($images as $image) {
+            if (file_exists(public_path($image->image))) {
+                unlink(public_path($image->image));
+            }
+        }
         ProductImage::where('product_id', $id)->delete();
+        $product->delete();
 
         return true;
+    }
+
+    public function massdestroy(Request $request)
+    {
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'exists:products,id',
+        ]);
+
+        foreach ($request->ids as $id) {
+            $product = Product::findOrFail($id);
+            $images = ProductImage::where('product_id', $id)->get();
+            foreach ($images as $image) {
+                if (file_exists(public_path($image->image))) {
+                    unlink(public_path($image->image));
+                }
+            }
+            ProductImage::where('product_id', $id)->delete();
+            $product->delete();
+        }
+
+        return response()->json(['success' => 'Products deleted successfully.']);
     }
 
     public function RemoveImage(Request $request)

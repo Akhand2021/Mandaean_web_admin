@@ -12,7 +12,9 @@ class Product extends Model
 
     protected $table = 'products';
 
-    protected $guards = [];
+    protected $guarded = [];
+
+    protected $fillable = ['status'];
 
     protected $casts = [
         'color_ids' => 'json',

@@ -24,7 +24,7 @@ class ProductController extends Controller
         $data['filter'] = $request->filter;
         $adminuser = session()->get('adminuser');
         $data['sort_name'] = $adminuser->name;
-        $dataList = Product::with('images')->orderBy('id', 'desc');
+        $dataList = Product::with('images')->whereNot('status', 'deleted')->orderBy('id', 'desc');
         $search = $request->search;
         if ($search) {
             $dataList->where('name', 'LIKE', '%' . $search . '%')
@@ -44,6 +44,9 @@ class ProductController extends Controller
                         return 'N/A';
                     }
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->status == 'active' ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>';
+                })
                 ->addColumn('action', function ($row) {
                     $editimg = asset('/') . 'public/assets/images/edit-round-line.png';
                     $btn = '<a href="' . route('product.edit', $row->id) . '" title="Edit"><label class="badge badge-gradient-dark">Edit</label></a> ';
@@ -51,7 +54,7 @@ class ProductController extends Controller
                     $btn .= '<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" class="deldata" id="' . $row->id . '" title="Delete" onclick=\'setData(' . $row->id . ',"' . route('product.destroy', $row->id) . '");\'><label class="badge badge-danger">Delete</label></a>';
                     return $btn;
                 })
-                ->rawColumns(['checkbox', 'image', 'action'])
+                ->rawColumns(['checkbox', 'status', 'image', 'action'])
                 ->make(true);
         }
 
@@ -88,6 +91,7 @@ class ProductController extends Controller
             // 'pe_category' => 'required',
             // 'pe_condition' => 'required',
             'photo' => 'required',
+            'status' => 'required',
         ], [
             'ar_name.required' => 'The name field is required.',
             'ar_category.required' => 'The category field is required.',
@@ -111,6 +115,7 @@ class ProductController extends Controller
             $product = new Product();
             $product['name'] = $request->name;
             $product['sku'] = _getSKU();
+            $product['status'] = $request->status;
             $product['price'] = $request->price;
             $product['inventory'] = $request->inventory;
             $product['size_ids'] = array_map('intval', $request->size);
@@ -173,6 +178,7 @@ class ProductController extends Controller
             // 'pe_category' => 'required',
             // 'pe_condition' => 'required',
             // 'photo' => 'required',
+            'status' => 'required',
         ], [
             'ar_name.required' => 'The name field is required.',
             'ar_category.required' => 'The category field is required.',
@@ -197,6 +203,7 @@ class ProductController extends Controller
             $product['name'] = $request->name;
             $product['price'] = $request->price;
             $product['inventory'] = $request->inventory;
+            $product['status'] = $request->status;
             $product['size_ids'] = array_map('intval', $request->size);
             $product['sizeprice'] = $sizeprice;
             $product['condition'] = $request->condition;
@@ -224,14 +231,8 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
-        $images = ProductImage::where('product_id', $id)->get();
-        foreach ($images as $image) {
-            if (file_exists(public_path($image->image))) {
-                unlink(public_path($image->image));
-            }
-        }
-        ProductImage::where('product_id', $id)->delete();
-        $product->delete();
+        $product->status = 'deleted';
+        $product->save();
 
         return true;
     }
@@ -243,19 +244,9 @@ class ProductController extends Controller
             'ids.*' => 'exists:products,id',
         ]);
 
-        foreach ($request->ids as $id) {
-            $product = Product::findOrFail($id);
-            $images = ProductImage::where('product_id', $id)->get();
-            foreach ($images as $image) {
-                if (file_exists(public_path($image->image))) {
-                    unlink(public_path($image->image));
-                }
-            }
-            ProductImage::where('product_id', $id)->delete();
-            $product->delete();
-        }
+        Product::whereIn('id', $request->ids)->update(['status' => 'deleted']);
 
-        return response()->json(['success' => 'Products deleted successfully.']);
+        return response()->json(['success' => 'Products marked as deleted successfully.']);
     }
 
     public function RemoveImage(Request $request)

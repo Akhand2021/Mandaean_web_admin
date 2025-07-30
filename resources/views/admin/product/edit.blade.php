@@ -147,6 +147,16 @@
                             <p style="color: red">{{$message}}</p>
                         @enderror
                     </div>
+                    <div class="form-group col-sm-12">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="active" {{ old('status',$data['product']->status) == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive" {{ old('status',$data['product']->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                        </select>
+                        @error('status')
+                            <p style="color: red">{{$message}}</p>
+                        @enderror
+                    </div>
                     <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
                     <a href="{{url('product')}}" class="btn btn-light">Cancel</a>
                 </form>

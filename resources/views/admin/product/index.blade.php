@@ -31,6 +31,7 @@
                                     <th> <input type="checkbox" id="select-all"> </th>
                                     <th> Image </th>
                                     <th> Name </th>
+                                    <th> Description </th>
                                     <th> SKU </th>
                                     <th> Price </th>
                                     <th> Status </th>
@@ -96,6 +97,10 @@
                 {
                     data: 'name',
                     name: 'name'
+                },
+                {
+                    data: 'condition',
+                    name: 'condition'
                 },
                 {
                     data: 'sku',

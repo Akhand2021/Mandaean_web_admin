@@ -37,6 +37,9 @@ class ProductController extends Controller
                 ->addColumn('checkbox', function ($row) {
                     return '<input type="checkbox" class="product-checkbox" value="' . $row->id . '">';
                 })
+                ->addColumn('condition', function ($row) {
+                    return $row->condition ? $row->condition : 'N/A';
+                })
                 ->editColumn('image', function ($row) {
                     if (count($row->images) > 0) {
                         return '<img src="' . url('/') . '/' . $row->images[0]->image . '">';

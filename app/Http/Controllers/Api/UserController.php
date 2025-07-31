@@ -44,7 +44,7 @@ class UserController extends Controller
 
         if ($user) {
             $user->gender = ($user->gender) ? ucfirst($user->gender) : NULL;
-            $user->profile = ($user->profile) ? url('/') . '/public/' . $user->profile : NULL;
+            $user->profile = ($user->profile) ? url('/') . '/' . $user->profile : NULL;
             return response([
                 'status' => true,
                 'message' => 'User profile data.',

@@ -137,7 +137,7 @@ class UserController extends Controller
 
         if ($request->hasFile('profile')) {
             $file = $request->file('profile');
-            $user->profile = upload_file_common($file, 'public/uploads/');
+            $user->profile = upload_file_common($file, 'uploads/profile/');
         }
         $user->save();
         $user->profile = $user->profile ?  asset($user->profile) : NULL;

@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasColumn('prayers', 'srt_file')) {
-            return;
-        }
-        Schema::table('prayers', function (Blueprint $table) {
-            $table->string('srt_file')->nullable()->after('docs');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('timezone')->nullable()->after('last_seen');
         });
     }
 
@@ -24,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('prayers', function (Blueprint $table) {
-            //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('timezone');
         });
     }
 };

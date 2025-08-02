@@ -616,6 +616,11 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
+        if ($user) {
+            $user->fcm_token = null;
+            $user->save();
+        }
+
         if ($request->hasHeader('Authorization')) {
             // Token-based
             $user?->currentAccessToken()?->delete();

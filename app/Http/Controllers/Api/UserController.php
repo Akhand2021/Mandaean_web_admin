@@ -320,4 +320,50 @@ class UserController extends Controller
 
         return response()->json(['message' => 'FCM Token saved.']);
     }
+
+    /**
+     * @OA\Put(
+     *     path="/api/user/timezone",
+     *     tags={"User Management"},
+     *     summary="Update User Timezone",
+     *     description="Update the authenticated user's timezone.",
+     *     security={{"apiKey":{}},{"bearerAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="timezone", type="string", example="America/New_York")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Timezone updated successfully.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Timezone updated successfully.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="The timezone field is required.")
+     *         )
+     *     )
+     * )
+     */
+    public function updateTimezone(Request $request)
+    {
+        $request->validate([
+            'timezone' => 'required|string|timezone',
+        ]);
+
+        $user = Auth::user();
+        $user->timezone = $request->timezone;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Timezone updated successfully.',
+        ]);
+    }
 }
